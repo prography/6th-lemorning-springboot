@@ -29,6 +29,8 @@ public class User implements UserDetails {
     @Column(name = "auth")
     private String auth;
 
+    private int point;
+
     @Builder
     public User(String email, String password, String auth) {
         this.email = email;

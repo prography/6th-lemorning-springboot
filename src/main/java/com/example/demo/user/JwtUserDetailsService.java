@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @Service
@@ -51,4 +52,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 				.auth(infoDto.getAuth())
 				.password(infoDto.getPassword()).build()).getId();
 	}
+
+	@Transactional
+    public void addPoint(String name, int amount) {
+		User user = userRepository.findByEmail(name).orElseThrow(EntityNotFoundException::new);
+		user.setPoint(amount+user.getPoint());
+    }
 }

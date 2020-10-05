@@ -1,10 +1,12 @@
 package com.example.demo.user;
 
+import com.example.demo.config.JwtTokenUtil;
 import com.example.demo.domain.Response;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,10 +14,11 @@ public class UserController {
 
     private final JwtUserDetailsService userService;
 
+    private final JwtTokenUtil jwtTokenUtil;
+
     @PostMapping("/signup")
     public Response signup(@RequestBody UserDto infoDto) { // 회원 추가
         Response response = new Response();
-
         try {
             userService.save(infoDto);
             response.setResponse("success");
@@ -28,4 +31,9 @@ public class UserController {
         return response;
     }
 
+    @GetMapping("/user/mypage/charge/{point}")
+    public @ResponseBody void chargePoint(@PathVariable("point")int point, Principal principal){
+        System.out.println("principal.getName() = " + principal.getName());
+        userService.addPoint(principal.getName(),point);
+    }
 }
