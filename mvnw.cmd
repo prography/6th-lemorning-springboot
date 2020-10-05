@@ -68,7 +68,7 @@ echo.
 goto error
 
 :OkJHome
-if exist "%JAVA_HOME%\bin\java.exe" goto init
+if exist "%JAVA_HOME%\bin\java.exe" goto
 
 echo.
 echo Error: JAVA_HOME is set to an invalid directory. >&2
