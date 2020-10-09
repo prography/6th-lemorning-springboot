@@ -58,4 +58,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 		User user = userRepository.findByEmail(name).orElseThrow(EntityNotFoundException::new);
 		user.setPoint(amount+user.getPoint());
     }
+
+    @Transactional
+	public User findByEmail(String email) {
+		User user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+		return user;
+	}
 }
