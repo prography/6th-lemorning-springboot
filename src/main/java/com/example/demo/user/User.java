@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import com.example.demo.shop.Product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter @Setter
@@ -19,8 +18,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "email", unique = true)
@@ -43,6 +42,12 @@ public class User implements UserDetails {
     private Gender gender;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> buyingProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> sellingProducts = new ArrayList<>();
 
     @Builder
     public User(String email, String password, String auth) {
@@ -113,5 +118,17 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         // 계정이 사용 가능한지 확인하는 로직
         return true; // true -> 사용 가능
+    }
+
+    // 구매 물품을 등록한다.
+    public void addBuyingItem(Product item){
+        buyingProducts.add(item);
+        item.setUser(this);
+    }
+
+    // 판매 물품을 등록한다.
+    public void addSellingItem(Product item){
+        sellingProducts.add(item);
+        item.setUser(this);
     }
 }

@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,21 @@ public class ProductService {
 				.alarmUrl(infoDto.getAlarmUrl())
 				.price(infoDto.getPrice())
 				.build()).getId();
+	}
+	@Transactional
+	public Long save(ProductDto infoDto,User user) {
+		Long id = productRepository.save(Product.builder()
+				.name(infoDto.getName())
+				.categoryName(infoDto.getCategoryName())
+				.imageUrl(infoDto.getImageUrl())
+				.alarmUrl(infoDto.getAlarmUrl())
+				.price(infoDto.getPrice())
+				.build()).getId();
+
+		Product findProduct = findById(id);
+		user.addSellingItem(findProduct);
+
+		return id;
 	}
 
 	@Transactional

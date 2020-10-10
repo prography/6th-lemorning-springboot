@@ -53,7 +53,7 @@ public class UserController {
             response.setResponse("success");
             response.setMessage("포인트 충전을 성공적으로 완료했습니다.");
             User findUser = userService.findByEmail(principal.getName());
-            UserInfoDto dto = new UserInfoDto(findUser.getEmail(),findUser.getPoint());
+            UserPointResponse dto = new UserPointResponse(findUser.getEmail(), findUser.getPoint());
             response.setData(dto);
         } catch (Exception e) {
             response.setResponse("failed");
@@ -63,10 +63,11 @@ public class UserController {
         return response;
     }
 
+    // 포인트 충전을 위한 클래스
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter @Setter
-    class UserInfoDto{
+    static class UserPointResponse{
         String name;
         int point;
     }
