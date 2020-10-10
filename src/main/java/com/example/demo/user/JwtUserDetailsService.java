@@ -53,6 +53,20 @@ public class JwtUserDetailsService implements UserDetailsService {
 				.password(infoDto.getPassword()).build()).getId();
 	}
 
+	/**
+	 * 유저의 완전한 정보를 업데이트하여 저장한다.
+	 * @param dto
+	 */
+	@Transactional
+	public Long updateUserInfo(UserDto dto){
+		User findUser = findByEmail(dto.getEmail());
+		findUser.setBirthday(dto.getBirthday());
+		findUser.setGender(dto.getGender());
+		findUser.setNickname(dto.getNickname());
+		findUser.setProfileImageUrl(dto.getProfileImageUrl());
+		return findUser.getId();
+	}
+
 	@Transactional
     public void addPoint(String name, int amount) {
 		User user = userRepository.findByEmail(name).orElseThrow(EntityNotFoundException::new);

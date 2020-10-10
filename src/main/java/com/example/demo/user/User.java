@@ -1,11 +1,14 @@
 package com.example.demo.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,11 +34,34 @@ public class User implements UserDetails {
 
     private int point;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime birthday;
+
+    private String profileImageUrl;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private String nickname;
+
     @Builder
     public User(String email, String password, String auth) {
         this.email = email;
         this.password = password;
         this.auth = auth;
+    }
+
+    @Builder
+    public User(String email, String password, String auth, int point, LocalDateTime birthday,
+                String profileImageUrl, Gender gender, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.auth = auth;
+        this.point = point;
+        this.birthday = birthday;
+        this.profileImageUrl = profileImageUrl;
+        this.gender = gender;
+        this.nickname = nickname;
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환
