@@ -20,12 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-    @Transactional
-    public Product findByName(String name) throws UsernameNotFoundException { // 시큐리티에서 지정한 서비스이기 때문에 이 메소드를 필수로 구현
-        return productRepository.findByName(name);
-    }
+	@Transactional
+	public Product findByName(String name) throws UsernameNotFoundException { // 시큐리티에서 지정한 서비스이기 때문에 이 메소드를 필수로 구현
+		return productRepository.findByName(name);
+	}
 
 	@Transactional
 	public Long save(ProductDto infoDto,User user) {
@@ -43,10 +43,10 @@ public class ProductService {
 		return id;
 	}
 
-	@Transactional
-	public List<Product> findAll() {
-		return productRepository.findAll();
-	}
+    @Transactional
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 
     @Transactional
     public Product findById(Long id) {
