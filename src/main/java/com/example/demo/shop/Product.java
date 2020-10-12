@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -44,10 +44,18 @@ public class Product {
     }
 
     @Builder
-    public Product(String name, String categoryName, String imageUrl, String alarmUrl){
+    public Product(String name, String categoryName, String imageUrl, String alarmUrl) {
         this.name = name;
         this.categoryName = categoryName;
         this.imageUrl = imageUrl;
         this.alarmUrl = alarmUrl;
+    }
+
+    public void update(String name, String categoryName, String imageUrl, String alarmUrl, int price) {
+        this.name = name;
+        this.categoryName = categoryName;
+        this.imageUrl = imageUrl;
+        this.alarmUrl = alarmUrl;
+        this.price = price;
     }
 }
