@@ -48,5 +48,11 @@ public class Product {
         this.user = user;
     }
 
-
+    public void update(String name, String categoryName, String imageUrl, String alarmUrl, int price) {
+        this.name = name;
+        this.categoryName = categoryName;
+        this.imageUrl = imageUrl;
+        this.alarmUrl = alarmUrl;
+        this.price = price;
+    }
 }
