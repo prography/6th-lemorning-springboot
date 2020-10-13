@@ -2,12 +2,14 @@ package com.example.demo.shop;
 
 import com.example.demo.domain.Response;
 import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.user.User;
 import com.example.demo.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,15 +18,21 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final JwtUserDetailsService userService;
+
     @PostMapping("/save")
-    public Response save(@RequestBody ProductDto productDto){
+    public Response save(@RequestBody ProductDto productDto, Principal principal){
         Response response = new Response();
         try {
-            Long savedId = productService.save(productDto);
+            User findUser = userService.findByEmail(principal.getName());
+            Long savedId = productService.save(productDto,findUser);
+            Product findProduct = productService.findById(savedId);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("상품 등록에 성공하였습니다.");
-            response.setData(productService.findById(savedId));
+
+            ProductDto answerDto = ProductDto.toDto(findProduct, findUser.getId());
+            response.setData(answerDto);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
@@ -70,4 +78,45 @@ public class ProductController {
         return response;
     }
 
+    @PostMapping("/update/{id}")
+    public Response update(@PathVariable Long id, @RequestBody ProductDto infoDto) {
+        Response response = new Response();
+
+        try {
+            response.setCode(200);
+            Long updateId = productService.update(id, infoDto);
+            Product afterProduct = productService.findById(updateId);
+            response.setResponse("success");
+            response.setMessage("상품이 갱신되었습니다.");
+            response.setData(afterProduct);
+        } catch (Exception e) {
+            response.setCode(400);
+            response.setResponse("failed");
+            response.setMessage("상품 업데이트 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+
+        return response;
+    }
+
+    @PostMapping("/delete/{id}")
+    public Response delete(@PathVariable Long id) {
+        Response response = new Response();
+
+        try {
+            response.setCode(200);
+            Product p = productService.findById(id);
+            Long delete_id = productService.delete(id);
+            response.setResponse("success");
+            response.setMessage("상품 " + p.getName() + " 이(가) 제거되었습니다. " + (delete_id == p.getId()));
+            response.setData(p);
+        } catch (Exception e) {
+            response.setCode(400);
+            response.setResponse("failed");
+            response.setMessage("상품 제거 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+
+        return response;
+    }
 }

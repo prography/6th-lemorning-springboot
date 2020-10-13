@@ -1,12 +1,11 @@
 package com.example.demo.shop;
 
+import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 
 @Entity
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -30,24 +29,30 @@ public class Product {
 
     private int price;
 
+    @JsonIgnore
+    // 연관관계의 주인
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private ArrayList<String> tags = new ArrayList<>();
 
     @Builder
-    public Product(Long id, int price, String name, String categoryName, String imageUrl, String alarmUrl) {
-        this.id = id;
+    public Product(String name, String categoryName, String imageUrl, String alarmUrl, int price, User user) {
         this.name = name;
         this.categoryName = categoryName;
         this.imageUrl = imageUrl;
         this.alarmUrl = alarmUrl;
         this.price = price;
+        this.user = user;
     }
 
-    @Builder
-    public Product(String name, String categoryName, String imageUrl, String alarmUrl){
+    public void update(String name, String categoryName, String imageUrl, String alarmUrl, int price) {
         this.name = name;
         this.categoryName = categoryName;
         this.imageUrl = imageUrl;
         this.alarmUrl = alarmUrl;
+        this.price = price;
     }
 }

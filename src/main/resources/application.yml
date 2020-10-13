@@ -1,8 +1,14 @@
 spring:
+#  h2:
+#    console:
+#      enabled: true
+#  datasource:
+#    hikari:
+#      jdbc-url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
   jwt:
     secret: lemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorning
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
+    url: jdbc:h2:tcp://localhost/~/lemorning
     username: sa
     password:
     driver-class-name: org.h2.Driver

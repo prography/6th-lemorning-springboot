@@ -1,14 +1,16 @@
 package com.example.demo.user;
 
+import com.example.demo.shop.Product;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
 @Getter @Setter
@@ -16,8 +18,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "email", unique = true)
@@ -31,11 +33,40 @@ public class User implements UserDetails {
 
     private int point;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime birthday;
+
+    private String profileImageUrl;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> buyingProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> sellingProducts = new ArrayList<>();
+
     @Builder
     public User(String email, String password, String auth) {
         this.email = email;
         this.password = password;
         this.auth = auth;
+    }
+
+    @Builder
+    public User(String email, String password, String auth, int point, LocalDateTime birthday,
+                String profileImageUrl, Gender gender, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.auth = auth;
+        this.point = point;
+        this.birthday = birthday;
+        this.profileImageUrl = profileImageUrl;
+        this.gender = gender;
+        this.nickname = nickname;
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환
@@ -87,5 +118,17 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         // 계정이 사용 가능한지 확인하는 로직
         return true; // true -> 사용 가능
+    }
+
+    // 구매 물품을 등록한다.
+    public void addBuyingItem(Product item){
+        buyingProducts.add(item);
+        item.setUser(this);
+    }
+
+    // 판매 물품을 등록한다.
+    public void addSellingItem(Product item){
+        sellingProducts.add(item);
+        item.setUser(this);
     }
 }

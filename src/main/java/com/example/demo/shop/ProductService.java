@@ -28,23 +28,45 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Long save(ProductDto infoDto) {
-		return productRepository.save(Product.builder()
+	public Long save(ProductDto infoDto,User user) {
+		Long id = productRepository.save(Product.builder()
 				.name(infoDto.getName())
 				.categoryName(infoDto.getCategoryName())
 				.imageUrl(infoDto.getImageUrl())
 				.alarmUrl(infoDto.getAlarmUrl())
 				.price(infoDto.getPrice())
 				.build()).getId();
+
+		Product findProduct = findById(id);
+		user.addSellingItem(findProduct);
+
+		return id;
 	}
 
-	@Transactional
-	public List<Product> findAll() {
-		return productRepository.findAll();
-	}
+    @Transactional
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 
-	@Transactional
-	public Product findById(Long id) {
-		return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-	}
+    @Transactional
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Transactional
+    public Long update(Long id, ProductDto infoDto) {
+        Product p = productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        p.update(infoDto.getName(), infoDto
+                .getCategoryName(), infoDto.getImageUrl(), infoDto.getAlarmUrl(), infoDto.getPrice());
+
+        return id;
+    }
+
+    @Transactional
+    public Long delete(Long id) {
+        productRepository.deleteById(id);
+
+        return id;
+    }
 }
