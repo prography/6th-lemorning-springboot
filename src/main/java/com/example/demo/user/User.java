@@ -119,16 +119,4 @@ public class User implements UserDetails {
         // 계정이 사용 가능한지 확인하는 로직
         return true; // true -> 사용 가능
     }
-
-    // 구매 물품을 등록한다.
-    public void addBuyingItem(Product item){
-        buyingProducts.add(item);
-        item.setUser(this);
-    }
-
-    // 판매 물품을 등록한다.
-    public void addSellingItem(Product item){
-        sellingProducts.add(item);
-        item.setUser(this);
-    }
 }

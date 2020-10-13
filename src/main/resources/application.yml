@@ -8,7 +8,7 @@ spring:
   jwt:
     secret: lemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorning
   datasource:
-    url: jdbc:h2:tcp://localhost/~/lemorning
+    url: jdbc:h2:tcp://localhost/~/test
     username: sa
     password:
     driver-class-name: org.h2.Driver
