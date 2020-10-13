@@ -22,6 +22,7 @@ public class ProductController {
 
     @PostMapping("/save")
     public Response save(@RequestBody ProductDto productDto, Principal principal){
+
         Response response = new Response();
         try {
             User findUser = userService.findByEmail(principal.getName());
@@ -60,14 +61,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Response findOne(@PathVariable("id")Long id){
+    public Response findOne(@PathVariable("id") Long id) {
         Response response = new Response();
 
         try {
             response.setCode(200);
             Product findProduct = productService.findById(id);
             response.setResponse("success");
-            response.setMessage("상품 "+findProduct+" 를 조회하는 것에 성공하였습니다.");
+            response.setMessage("상품 " + findProduct + " 를 조회하는 것에 성공하였습니다.");
             response.setData(findProduct);
         } catch (Exception e) {
             response.setCode(400);
