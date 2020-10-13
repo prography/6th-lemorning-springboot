@@ -20,23 +20,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-    @Transactional
-    public Product findByName(String name) throws UsernameNotFoundException { // 시큐리티에서 지정한 서비스이기 때문에 이 메소드를 필수로 구현
-        return productRepository.findByName(name);
-    }
+	@Transactional
+	public Product findByName(String name) throws UsernameNotFoundException { // 시큐리티에서 지정한 서비스이기 때문에 이 메소드를 필수로 구현
+		return productRepository.findByName(name);
+	}
 
-    @Transactional
-    public Long save(ProductDto infoDto) {
-        return productRepository.save(Product.builder()
-                .name(infoDto.getName())
-                .categoryName(infoDto.getCategoryName())
-                .imageUrl(infoDto.getImageUrl())
-                .alarmUrl(infoDto.getAlarmUrl())
-                .price(infoDto.getPrice())
-                .build()).getId();
-    }
+	@Transactional
+	public Long save(ProductDto infoDto,User user) {
+		Long id = productRepository.save(Product.builder()
+				.name(infoDto.getName())
+				.categoryName(infoDto.getCategoryName())
+				.imageUrl(infoDto.getImageUrl())
+				.alarmUrl(infoDto.getAlarmUrl())
+				.price(infoDto.getPrice())
+				.build()).getId();
+
+		Product findProduct = findById(id);
+		user.addSellingItem(findProduct);
+
+		return id;
+	}
 
     @Transactional
     public List<Product> findAll() {

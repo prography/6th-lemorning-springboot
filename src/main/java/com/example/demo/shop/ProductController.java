@@ -2,12 +2,14 @@ package com.example.demo.shop;
 
 import com.example.demo.domain.Response;
 import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.user.User;
 import com.example.demo.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,15 +18,22 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final JwtUserDetailsService userService;
+
     @PostMapping("/save")
-    public Response save(@RequestBody ProductDto productDto) {
+    public Response save(@RequestBody ProductDto productDto, Principal principal){
+
         Response response = new Response();
         try {
-            Long savedId = productService.save(productDto);
+            User findUser = userService.findByEmail(principal.getName());
+            Long savedId = productService.save(productDto,findUser);
+            Product findProduct = productService.findById(savedId);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("상품 등록에 성공하였습니다.");
-            response.setData(productService.findById(savedId));
+
+            ProductDto answerDto = ProductDto.toDto(findProduct, findUser.getId());
+            response.setData(answerDto);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
