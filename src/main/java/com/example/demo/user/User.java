@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import com.example.demo.order.Order;
 import com.example.demo.shop.Product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -42,6 +43,10 @@ public class User implements UserDetails {
     private Gender gender;
 
     private String nickname;
+
+    // 연관관계의 종속자
+    @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
+    private List<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Product> buyingProducts = new ArrayList<>();
@@ -118,17 +123,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         // 계정이 사용 가능한지 확인하는 로직
         return true; // true -> 사용 가능
-    }
-
-    // 구매 물품을 등록한다.
-    public void addBuyingItem(Product item){
-        buyingProducts.add(item);
-        item.setUser(this);
-    }
-
-    // 판매 물품을 등록한다.
-    public void addSellingItem(Product item){
-        sellingProducts.add(item);
-        item.setUser(this);
     }
 }

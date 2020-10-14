@@ -21,14 +21,14 @@ public class ProductDto {
 
   private Long seller_id;
 
-  public static ProductDto toDto(Product findProduct, Long user_id) {
+  public static ProductDto toDto(Product findProduct) {
     ProductDto answerDto = new ProductDto();
     answerDto.setImageUrl(findProduct.getImageUrl());
     answerDto.setAlarmUrl(findProduct.getAlarmUrl());
     answerDto.setCategoryName(findProduct.getCategoryName());
     answerDto.setPrice(findProduct.getPrice());
     answerDto.setName(findProduct.getName());
-    answerDto.setSeller_id(user_id);
+    answerDto.setSeller_id(findProduct.getUser().getId());
     return  answerDto;
   }
 }
