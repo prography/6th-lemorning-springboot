@@ -17,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;
 
     private String name;
@@ -93,10 +93,12 @@ public class Product {
     }
 
     private static Product toEntity(ProductDto dto) {
-        return Product.builder().name(dto.getName())
-                .categoryName(dto.getCategoryName())
-                .imageUrl(dto.getImageUrl())
-                .alarmUrl(dto.getAlarmUrl())
-                .price(dto.getPrice()).build();
+        return Product.builder()
+                        .name(dto.getName())
+                        .categoryName(dto.getCategoryName())
+                        .imageUrl(dto.getImageUrl())
+                        .alarmUrl(dto.getAlarmUrl())
+                        .price(dto.getPrice())
+                .build();
     }
 }

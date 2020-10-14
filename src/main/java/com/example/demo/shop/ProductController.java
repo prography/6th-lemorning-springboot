@@ -1,6 +1,7 @@
 package com.example.demo.shop;
 
 import com.example.demo.domain.Response;
+import com.example.demo.order.OrderService;
 import com.example.demo.user.JwtUserDetailsService;
 import com.example.demo.user.User;
 import com.example.demo.user.UserDto;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-
+    private final OrderService orderService;
     private final JwtUserDetailsService userService;
 
     @GetMapping("/buy/{id}")
