@@ -1,7 +1,6 @@
 package com.example.demo.shop;
 
 import com.example.demo.domain.Response;
-import com.example.demo.order.OrderService;
 import com.example.demo.user.JwtUserDetailsService;
 import com.example.demo.user.User;
 import com.example.demo.user.UserDto;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,35 +17,22 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final OrderService orderService;
-    private final JwtUserDetailsService userService;
 
-    @GetMapping("/buy/{id}")
-    public Response buyProduct(@PathVariable("id")Long productId,Principal principal){
-        Response response = new Response();
-        try {
-            Product buyProduct = productService.buy(principal.getName(), productId);
-            response.setResponse("success");
-            response.setMessage("구매 처리 완료");
-            response.setData(buyProduct);
-        } catch (Exception e) {
-            response.setResponse("failed");
-            response.setMessage("구매 처리하는 도중 오류가 발생했습니다.");
-            response.setData(e.toString());
-        }
-        return response;
-    }
+    private final JwtUserDetailsService userService;
 
     @PostMapping("/save")
     public Response save(@RequestBody ProductDto productDto, Principal principal){
 
         Response response = new Response();
         try {
-            Product savedProduct = productService.addSellingProduct(productDto, principal.getName());
+            User findUser = userService.findByEmail(principal.getName());
+            Long savedId = productService.save(productDto,findUser);
+            Product findProduct = productService.findById(savedId);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("상품 등록에 성공하였습니다.");
-            ProductDto answerDto = ProductDto.toDto(savedProduct);
+
+            ProductDto answerDto = ProductDto.toDto(findProduct, findUser.getId());
             response.setData(answerDto);
         } catch (Exception e) {
             response.setCode(500);
