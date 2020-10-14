@@ -30,7 +30,7 @@ public class OrderService {
         Product product = itemService.findById(itemId);
 
         // 주문 상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(product,product.getPrice());
+        OrderItem orderItem = OrderItem.createOrderItem(product);
 
         // 주문 생성
         Order order = Order.createOrder(member, orderItem);

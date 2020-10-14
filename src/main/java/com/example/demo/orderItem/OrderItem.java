@@ -36,10 +36,10 @@ public class OrderItem {
 
     // 생성 메서드
     // 먼저 product 랑 orderItem 이랑 묶어준다.
-    public static OrderItem createOrderItem(Product product, int price){
+    public static OrderItem createOrderItem(Product product){
         OrderItem orderItem = new OrderItem();
         orderItem.setProduct(product);
-        orderItem.setOrderPrice(price);
+        orderItem.setOrderPrice(product.getPrice());
 
         return orderItem;
     }
