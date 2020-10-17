@@ -59,12 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers("/h2-console/**","/authenticate","/signup","/signup2").permitAll()
 					.anyRequest().authenticated().
 				and()
-				.authorizeRequests().antMatchers("/h2-console/*","/authenticate","/signup").permitAll().
 				// all other requests need to be authenticated
-				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to
 				// store user's state.
-				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		// Add a filter to validate the tokens with every request
