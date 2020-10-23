@@ -37,21 +37,6 @@ public class UserController {
         }
         return response;
     }
-    @GetMapping("/{userName}/buyingList")
-    public Response buyingList(@PathVariable("userName")String email){
-        Response response = new Response();
-        try {
-            List<Product> buyingList = userService.findBuyingList(email);
-            response.setResponse("success");
-            response.setMessage(email+"님의 구매리스트입니다.");
-            response.setData(buyingList);
-        } catch (Exception e) {
-            response.setResponse("failed");
-            response.setMessage("구매리스트를 조회하는 도중 오류가 발생했습니다.");
-            response.setData(e.toString());
-        }
-        return response;
-    }
 
     @PostMapping("/signup")
     public Response signup(@RequestBody UserDto infoDto) { // 회원 추가
