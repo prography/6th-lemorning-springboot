@@ -61,7 +61,7 @@ public class S3Service {
         String folderString = date1.getYear()+"/"+date1.getMonthValue()+"/"+date1.getDayOfMonth()+"/";
         s3.putObject(new PutObjectRequest(bucket, folderString+fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3.getUrl(bucket, fileName).toString();
+        return s3.getUrl(bucket, folderString+fileName).toString();
     }
 
     public void deleteFile(String filePath) throws AmazonServiceException {

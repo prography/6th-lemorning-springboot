@@ -8,6 +8,8 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class DemoApplicationTests {
 
@@ -21,7 +23,9 @@ class DemoApplicationTests {
 	@Test
 	public void  S3_폴더_업로드() throws IOException {
 		MockMultipartFile firstFile = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-		s3Service.upload("", firstFile);
+		String url = s3Service.upload("", firstFile);
+		System.out.println(url);
+		assertTrue(url.contains("https://bomnae-static.s3.ap-northeast-2.amazonaws.com/"));
 	}
 
 }
