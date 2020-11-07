@@ -2,8 +2,8 @@ package com.example.demo.user;
 
 import com.example.demo.config.JwtTokenUtil;
 import com.example.demo.domain.Response;
-import com.example.demo.shop.Product;
-import com.example.demo.shop.ProductService;
+import com.example.demo.product.Product;
+import com.example.demo.product.ProductService;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
 

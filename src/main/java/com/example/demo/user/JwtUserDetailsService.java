@@ -1,7 +1,7 @@
 package com.example.demo.user;
 
-import com.example.demo.shop.Product;
-import com.example.demo.shop.ProductRepository;
+import com.example.demo.product.Product;
+import com.example.demo.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

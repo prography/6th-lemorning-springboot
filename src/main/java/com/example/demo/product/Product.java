@@ -1,14 +1,12 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
 import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

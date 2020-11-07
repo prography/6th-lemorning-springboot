@@ -1,19 +1,13 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
 import com.example.demo.user.User;
-import com.example.demo.user.UserDto;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 

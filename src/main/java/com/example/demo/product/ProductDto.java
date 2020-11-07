@@ -1,6 +1,5 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
-import com.example.demo.user.User;
 import lombok.*;
 
 @Getter

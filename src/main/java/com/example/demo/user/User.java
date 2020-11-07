@@ -1,8 +1,9 @@
 package com.example.demo.user;
 
+import com.example.demo.creditcard.CreditCardInfo;
+import com.example.demo.customOrder.CustomOrder;
 import com.example.demo.order.Order;
-import com.example.demo.shop.Product;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.demo.product.Product;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,12 +15,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
 
-    @Id @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -43,6 +46,12 @@ public class User implements UserDetails {
     private Gender gender;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CreditCardInfo> creditCardInfos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CustomOrder> customOrders = new ArrayList<>();
 
     // 연관관계의 종속자
     @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
