@@ -30,4 +30,12 @@ public class CustomOrderProduct {
     private CustomOrder customOrder;
 
     private int customOrderPrice;
+
+    public static CustomOrderProduct createCustomOrderProduct(CustomProduct customProduct) {
+        CustomOrderProduct customOrderProduct = new CustomOrderProduct();
+        customOrderProduct.setCustomProduct(customProduct);
+        customOrderProduct.setCustomOrderPrice(customProduct.getPrice());
+
+        return customOrderProduct;
+    }
 }

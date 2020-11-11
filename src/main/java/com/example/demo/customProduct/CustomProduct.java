@@ -24,6 +24,8 @@ public class CustomProduct {
 
     private String name;
 
+    private int price;
+
     @OneToMany(mappedBy = "customProduct", cascade = CascadeType.ALL)
     private List<CustomOrderProduct> customOrderProducts = new ArrayList<>();
 }

@@ -35,12 +35,11 @@ public class OrderProduct {
 
     // 생성 메서드
     // 먼저 product 랑 orderItem 이랑 묶어준다.
-    public static OrderProduct createOrderItem(Product product){
+    public static OrderProduct createOrderProduct(Product product){
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProduct(product);
         orderProduct.setOrderPrice(product.getPrice());
 
         return orderProduct;
     }
-
 }
