@@ -27,10 +27,11 @@ public class CustomOrderProduct {
 
     private int customOrderPrice;
 
-    public static CustomOrderProduct createCustomOrderProduct(CustomProduct customProduct) {
+    // 생성 메소드
+    public static CustomOrderProduct createCustomOrderProduct(CustomProduct customProduct, int price) {
         CustomOrderProduct customOrderProduct = new CustomOrderProduct();
         customOrderProduct.setCustomProduct(customProduct);
-        customOrderProduct.setCustomOrderPrice(customProduct.getPrice());
+        customOrderProduct.setCustomOrderPrice(price);
 
         return customOrderProduct;
     }

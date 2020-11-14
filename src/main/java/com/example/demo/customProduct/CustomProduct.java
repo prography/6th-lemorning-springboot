@@ -22,7 +22,8 @@ public class CustomProduct {
     @Column(name = "custom_product_id")
     private Long id;
 
-    private String name;
+    private String productName;
+    private String author;
 
     private int price;
 

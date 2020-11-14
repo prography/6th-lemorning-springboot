@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -37,8 +37,7 @@ public class User implements UserDetails {
 
     private int point;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     private String profileImageUrl;
 
@@ -64,23 +63,20 @@ public class User implements UserDetails {
     private List<Product> sellingProducts = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String auth) {
-        this.email = email;
-        this.password = password;
-        this.auth = auth;
-    }
-
-    @Builder
-    public User(String email, String password, String auth, int point, LocalDateTime birthday,
-                String profileImageUrl, Gender gender, String nickname) {
+    public User(String email, String password, String auth, int point, LocalDate birthday, Gender gender, String nickname) {
         this.email = email;
         this.password = password;
         this.auth = auth;
         this.point = point;
         this.birthday = birthday;
-        this.profileImageUrl = profileImageUrl;
         this.gender = gender;
         this.nickname = nickname;
+    }
+
+    // 연관관계 메소드
+    public void addCreditCardInfo(CreditCardInfo creditCardInfo) {
+        this.creditCardInfos.add(creditCardInfo);
+        creditCardInfo.setUser(this);
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환

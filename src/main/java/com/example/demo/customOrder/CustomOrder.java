@@ -33,4 +33,33 @@ public class CustomOrder {
 
     @OneToMany(mappedBy = "customOrder", cascade = CascadeType.ALL)
     private List<CustomOrderProduct> customOrderProducts = new ArrayList<>();
+
+    // 생성 메소드
+    public static CustomOrder createCustomOrder(User user, CreditCardInfo creditCardInfo, CustomOrderProduct... customOrderProducts) {
+        CustomOrder customOrder = new CustomOrder();
+        customOrder.addUser(user);
+        customOrder.addCreditCardInfo(creditCardInfo);
+        customOrder.setOrderDate(LocalDate.now());
+
+        for (CustomOrderProduct customOrderProduct : customOrderProducts)
+            customOrder.addCustomOrderProduct(customOrderProduct);
+
+        return customOrder;
+    }
+
+    // 연관관계 메소드
+    public void addUser(User user) {
+        this.user = user;
+        user.getCustomOrders().add(this);
+    }
+
+    public void addCreditCardInfo(CreditCardInfo creditCardInfo) {
+        this.creditCardInfo = creditCardInfo;
+        creditCardInfo.getCustomOrders().add(this);
+    }
+
+    public void addCustomOrderProduct(CustomOrderProduct customOrderProduct) {
+        this.customOrderProducts.add(customOrderProduct);
+        customOrderProduct.setCustomOrder(this);
+    }
 }
