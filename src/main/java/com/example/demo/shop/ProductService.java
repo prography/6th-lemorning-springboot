@@ -126,7 +126,7 @@ public class ProductService {
     @Transactional
     public void buyAvailable(String email, int price) {
         User findUser = findByEmail(email);
-        if(findUser.getPoint()-price<0){
+        if(findUser.getPointSum()-price<0){
             throw new IllegalStateException("돈이 부족합니다.");
         }
     }

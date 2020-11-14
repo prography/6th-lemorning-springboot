@@ -43,8 +43,9 @@ public class User implements UserDetails {
 
     private String nickname;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "point_id")
+    private int pointSum;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Point point;
 
     // 연관관계의 종속자
@@ -57,6 +58,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Product> sellingProducts = new ArrayList<>();
 
+    public User(String email){
+        this.email = email;
+        this.point = new Point(0);
+    }
     @Builder
     public User(String email, String password, String auth) {
         this.email = email;
@@ -75,6 +80,11 @@ public class User implements UserDetails {
         this.profileImageUrl = profileImageUrl;
         this.gender = gender;
         this.nickname = nickname;
+    }
+
+    public User(String email, Point point) {
+        this.email = email;
+        this.point = new Point(0);
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환

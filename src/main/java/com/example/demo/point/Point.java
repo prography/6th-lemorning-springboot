@@ -21,7 +21,8 @@ public class Point {
 
     private LocalDateTime pointDateTime;
 
-    @OneToOne(mappedBy = "point")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
 

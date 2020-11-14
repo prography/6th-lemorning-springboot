@@ -25,4 +25,10 @@ public class PointService {
         Point save = pointRepository.save(point);
         return save;
     }
+
+    @Transactional
+    public int amountSum(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        return pointRepository.amountSum(user);
+    }
 }

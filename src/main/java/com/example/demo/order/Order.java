@@ -53,7 +53,7 @@ public class Order {
         order.setUser(user);
         for (OrderItem orderItem: orderItems){
             order.addOrderItem(orderItem);
-            user.setPoint(user.getPoint()-orderItem.getOrderPrice());   // 포인트 차감
+            user.setPointSum(user.getPointSum()-orderItem.getOrderPrice());   // 포인트 차감
         }
         order.setStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());

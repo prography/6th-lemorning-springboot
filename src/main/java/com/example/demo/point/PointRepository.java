@@ -13,5 +13,5 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Transactional
     @Query("select sum(p.pointAmount) from Point p where p.user = ?1")
-    Long amountSum(User user);
+    Integer amountSum(User user);
 }

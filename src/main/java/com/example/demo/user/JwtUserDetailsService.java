@@ -93,4 +93,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 		User findUser = findByEmail(email);
 		return findUser.getBuyingProducts();
 	}
+
+	@Transactional
+    public void updatePointInfo(long l, int pointAmount) {
+		User user = userRepository.findById(l).orElseThrow();
+		user.setPointSum(user.getPointSum()+pointAmount);
+    }
 }
