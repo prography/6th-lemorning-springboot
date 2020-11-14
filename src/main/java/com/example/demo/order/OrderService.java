@@ -31,7 +31,7 @@ public class OrderService {
         // 주문 상품 생성
         OrderProduct orderProduct = OrderProduct.createOrderProduct(product);
 
-        // 주문 생성
+        // 주문 생성 + 포인트 차감.
         Order order = Order.createOrder(member, orderProduct);
 
         // 주문 저장

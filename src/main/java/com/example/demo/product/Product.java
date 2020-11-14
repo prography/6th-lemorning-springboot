@@ -48,6 +48,11 @@ public class Product {
         this.user = user;
     }
 
+    public Product(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+
 
     public void update(String name, String categoryName, String imageUrl, String alarmUrl, int price) {
         this.name = name;
@@ -81,7 +86,7 @@ public class Product {
         Product new_product = new Product();
         new_product.update(product);
         new_product.addBuyingProductList(user);
-        user.setPoint(user.getPoint()-new_product.getPrice());
+        user.setPointSum(user.getPointSum()-new_product.getPrice());
         return new_product;
     }
     public static Product addProduct(User user, ProductDto dto) {

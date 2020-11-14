@@ -25,15 +25,8 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Long save(ProductDto infoDto) {
-		Long id = productRepository.save(Product.builder()
-				.name(infoDto.getName())
-				.categoryName(infoDto.getCategoryName())
-				.imageUrl(infoDto.getImageUrl())
-				.alarmUrl(infoDto.getAlarmUrl())
-				.price(infoDto.getPrice())
-				.build()).getId();
-
+	public Long save(Product product) {
+		Long id = productRepository.save(product).getId();
 		return id;
 	}
 
@@ -120,7 +113,7 @@ public class ProductService {
     @Transactional
     public void buyAvailable(String email, int price) {
         User findUser = findByEmail(email);
-        if(findUser.getPoint()-price<0){
+        if(findUser.getPointSum()-price<0){
             throw new IllegalStateException("돈이 부족합니다.");
         }
     }

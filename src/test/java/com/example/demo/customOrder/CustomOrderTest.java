@@ -62,7 +62,7 @@ class CustomOrderTest {
 
         // then
         assertThat(customOrder.getUser().getId()).isEqualTo(1L);
-        assertThat(customOrder.getCreditCardInfo().getCardNickname()).isEqualTo("two card");
+        assertThat(customOrder.getCreditCardInfo().getCardNickname()).isEqualTo("one card");
     }
 
     private CustomProduct createCustomProduct(int price, String author, String productName) {

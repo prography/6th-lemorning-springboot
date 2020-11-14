@@ -6,6 +6,7 @@ import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,23 +43,23 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status; // 주문 상태[ORDER,CANCEL]
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
         user.getOrders().add(this);
     }
 
-    public void addOrderItem(OrderProduct orderProduct){
+    public void addOrderItem(OrderProduct orderProduct) {
         orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }
 
     // 생성 메서드
-    public static Order createOrder(User user, OrderProduct... orderProducts){
+    public static Order createOrder(User user, OrderProduct... orderProducts) {
         Order order = new Order();
         order.setUser(user);
-        for (OrderProduct orderProduct : orderProducts){
+        for (OrderProduct orderProduct : orderProducts) {
             order.addOrderItem(orderProduct);
-            user.setPoint(user.getPoint()- orderProduct.getOrderPrice());   // 포인트 차감
+            user.setPointSum(user.getPointSum() - orderProduct.getOrderPrice());   // 포인트 차감
         }
         order.setStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());

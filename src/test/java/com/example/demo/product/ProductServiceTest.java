@@ -16,6 +16,7 @@ class ProductServiceTest {
                 .imageUrl("http://www.naver.com")
                 .alarmUrl("http://www.naver.com")
                 .build();
-        productService.save(productDto);
+        Product product = ProductDto.toEntity(productDto);
+        productService.save(product);
     }
 }

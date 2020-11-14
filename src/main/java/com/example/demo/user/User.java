@@ -4,6 +4,7 @@ import com.example.demo.creditcard.CreditCardInfo;
 import com.example.demo.customOrder.CustomOrder;
 import com.example.demo.order.Order;
 import com.example.demo.product.Product;
+import com.example.demo.point.Point;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,8 +36,6 @@ public class User implements UserDetails {
     @Column(name = "auth")
     private String auth;
 
-    private int point;
-
     private LocalDate birthday;
 
     private String profileImageUrl;
@@ -52,6 +51,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CustomOrder> customOrders = new ArrayList<>();
 
+    private int pointSum;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Point point;
+
     // 연관관계의 종속자
     @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
     private List<Order> orders = new ArrayList<>();
@@ -62,12 +66,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Product> sellingProducts = new ArrayList<>();
 
+    public User(String email) {
+        this.email = email;
+        this.point = new Point(0);
+    }
+
     @Builder
     public User(String email, String password, String auth, int point, LocalDate birthday, Gender gender, String nickname) {
         this.email = email;
         this.password = password;
         this.auth = auth;
-        this.point = point;
+        this.point = new Point(point);
         this.birthday = birthday;
         this.gender = gender;
         this.nickname = nickname;
@@ -77,6 +86,12 @@ public class User implements UserDetails {
     public void addCreditCardInfo(CreditCardInfo creditCardInfo) {
         this.creditCardInfos.add(creditCardInfo);
         creditCardInfo.setUser(this);
+    }
+
+    public User(String email, Point point) {
+        this.email = email;
+        this.point = point;
+        this.pointSum += point.getPointAmount();
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환
