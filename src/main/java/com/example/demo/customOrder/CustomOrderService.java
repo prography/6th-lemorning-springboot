@@ -1,6 +1,5 @@
 package com.example.demo.customOrder;
 
-<<<<<<< HEAD
 import com.example.demo.creditcard.CreditCardInfo;
 import com.example.demo.creditcard.CreditCardRepository;
 import com.example.demo.customOrderProduct.CustomOrderProduct;
@@ -8,25 +7,18 @@ import com.example.demo.customProduct.CustomProduct;
 import com.example.demo.customProduct.CustomProductRepository;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
-=======
->>>>>>> add Service & Repository
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-<<<<<<< HEAD
-import java.util.Optional;
-=======
->>>>>>> add Service & Repository
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CustomOrderService {
 
-<<<<<<< HEAD
     private final UserRepository userRepository;
     private final CreditCardRepository creditCardRepository;
     private final CustomOrderRepository customOrderRepository;
@@ -43,13 +35,11 @@ public class CustomOrderService {
 
         // 주문
         CustomOrder customOrder = CustomOrder.createCustomOrder(user, card, customOrderProduct);
-
-=======
-    private final CustomOrderRepository customOrderRepository;
+        return customOrder.getId();
+    }
 
     @Transactional
     public Long save(CustomOrder customOrder) {
->>>>>>> add Service & Repository
         customOrderRepository.save(customOrder);
 
         return customOrder.getId();
@@ -62,12 +52,9 @@ public class CustomOrderService {
     public List<CustomOrder> findAll() {
         return customOrderRepository.findAll();
     }
-<<<<<<< HEAD
 
     @Transactional
     public void delete(Long id) {
         customOrderRepository.deleteById(id);
     }
-=======
->>>>>>> add Service & Repository
 }

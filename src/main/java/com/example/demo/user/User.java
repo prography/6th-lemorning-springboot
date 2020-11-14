@@ -66,7 +66,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Product> sellingProducts = new ArrayList<>();
 
-    public User(String email) {
+    public User(String email){
         this.email = email;
         this.point = new Point(0);
     }
@@ -89,10 +89,10 @@ public class User implements UserDetails {
     }
 
     public User(String email, Point point) {
-        this.email = email;
-        this.point = point;
-        this.pointSum += point.getPointAmount();
-    }
+            this.email = email;
+            this.point = point;
+            this.pointSum += point.getPointAmount();
+        }
 
     // 사용자의 권한을 콜렉션 형태로 반환
     // 단, 클래스 자료형은 GrantedAuthority를 구현해야함
