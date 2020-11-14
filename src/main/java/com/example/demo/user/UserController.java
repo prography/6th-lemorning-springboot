@@ -2,6 +2,9 @@ package com.example.demo.user;
 
 import com.example.demo.config.JwtTokenUtil;
 import com.example.demo.domain.Response;
+import com.example.demo.point.Point;
+import com.example.demo.point.PointChargeDto;
+import com.example.demo.point.PointService;
 import com.example.demo.shop.Product;
 import com.example.demo.shop.ProductService;
 import lombok.*;
@@ -15,6 +18,8 @@ import java.util.List;
 public class UserController {
 
     private final JwtUserDetailsService userService;
+
+    private final PointService pointService;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -86,12 +91,12 @@ public class UserController {
     public @ResponseBody Response chargePoint(@PathVariable("point")int point, Principal principal){
         Response response = new Response();
         try {
-            userService.addPoint(principal.getName(),point);
+            User byEmail = userService.findByEmail(principal.getName());
+            pointService.chargePoint(new PointChargeDto(point),byEmail.getId());
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("포인트 충전을 성공적으로 완료했습니다.");
-            User findUser = userService.findByEmail(principal.getName());
-            UserPointResponse dto = new UserPointResponse(findUser.getEmail(), findUser.getPoint());
+            UserPointResponse dto = new UserPointResponse(byEmail.getEmail(), byEmail.getPoint());
             response.setData(dto);
         } catch (Exception e) {
             response.setResponse("failed");
@@ -107,6 +112,6 @@ public class UserController {
     @Getter @Setter
     static class UserPointResponse{
         String name;
-        int point;
+        Point point;
     }
 }

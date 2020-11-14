@@ -1,5 +1,6 @@
 package com.example.demo.user;
 
+import com.example.demo.point.PointRepository;
 import com.example.demo.shop.Product;
 import com.example.demo.shop.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 	private final UserRepository userRepository;
 
 	private final ProductRepository productRepository;
+
+	private final PointRepository pointRepository;
 
 	/**
 	 * Spring Security 필수 메소드 구현
@@ -73,23 +76,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 		return findUser.getId();
 	}
 
-	@Transactional
-    public void addPoint(String name, int amount) {
-		User user = userRepository.findByEmail(name).orElseThrow(EntityNotFoundException::new);
-		user.setPoint(amount+user.getPoint());
-    }
-
     @Transactional
 	public User findByEmail(String email) {
 		User user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
 		return user;
-	}
-
-
-    @Transactional
-	public void subPoint(String email, int price) {
-		User findUser = findByEmail(email);
-		findUser.setPoint(findUser.getPoint()-price);
 	}
 
 	@Transactional

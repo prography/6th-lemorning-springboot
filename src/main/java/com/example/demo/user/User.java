@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.order.Order;
+import com.example.demo.point.Point;
 import com.example.demo.shop.Product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -32,8 +33,6 @@ public class User implements UserDetails {
     @Column(name = "auth")
     private String auth;
 
-    private int point;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime birthday;
 
@@ -43,6 +42,10 @@ public class User implements UserDetails {
     private Gender gender;
 
     private String nickname;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "point_id")
+    private Point point;
 
     // 연관관계의 종속자
     @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
@@ -67,7 +70,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.auth = auth;
-        this.point = point;
+        this.point = new Point(point);
         this.birthday = birthday;
         this.profileImageUrl = profileImageUrl;
         this.gender = gender;
