@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class UserDto {
   private String email;
   private String password;
-  private String auth;
+  private String auth = "ROLE_USER";
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate birthday;
   private Gender gender;
