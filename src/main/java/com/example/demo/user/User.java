@@ -84,7 +84,8 @@ public class User implements UserDetails {
 
     public User(String email, Point point) {
         this.email = email;
-        this.point = new Point(0);
+        this.point = point;
+        this.pointSum  += point.getPointAmount();
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환

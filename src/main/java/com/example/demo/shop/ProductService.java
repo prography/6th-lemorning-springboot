@@ -31,15 +31,8 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Long save(ProductDto infoDto) {
-		Long id = productRepository.save(Product.builder()
-				.name(infoDto.getName())
-				.categoryName(infoDto.getCategoryName())
-				.imageUrl(infoDto.getImageUrl())
-				.alarmUrl(infoDto.getAlarmUrl())
-				.price(infoDto.getPrice())
-				.build()).getId();
-
+	public Long save(Product product) {
+		Long id = productRepository.save(product).getId();
 		return id;
 	}
 

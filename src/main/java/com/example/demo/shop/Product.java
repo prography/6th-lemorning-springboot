@@ -50,6 +50,11 @@ public class Product {
         this.user = user;
     }
 
+    public Product(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+
 
     public void update(String name, String categoryName, String imageUrl, String alarmUrl, int price) {
         this.name = name;
