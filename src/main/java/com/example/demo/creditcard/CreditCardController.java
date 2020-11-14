@@ -4,6 +4,8 @@ import com.example.demo.domain.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/card")
@@ -75,15 +77,34 @@ public class CreditCardController {
         Response response = new Response();
 
         try {
-            Long deleteId = creditCardService.delete(cardId);
+            creditCardService.delete(cardId);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 삭제에 성공하였습니다.");
-            response.setData(deleteId);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
             response.setMessage("카드 삭제 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+
+        return response;
+    }
+
+    @GetMapping("/list")
+    public Response list(){
+        Response response = new Response();
+
+        try {
+            List<CreditCardInfo> cardInfoList = creditCardService.findAll();
+            response.setCode(200);
+            response.setResponse("success");
+            response.setMessage("카드 리스트 조회에 성공하였습니다.");
+            response.setData(cardInfoList);
+        } catch (Exception e) {
+            response.setCode(500);
+            response.setResponse("failed");
+            response.setMessage("카드 리스트 조회 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
 

@@ -1,7 +1,10 @@
 package com.example.demo.order;
 
 import com.example.demo.domain.Response;
+import com.example.demo.orderItem.OrderItem;
+import com.example.demo.shop.Product;
 import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +17,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final JwtUserDetailsService memberService;
+    private final JwtUserDetailsService userService;
 
     @PostMapping(value = "/order/{id}")
     public Response create(Principal principal, @PathVariable("id") Long itemId){
@@ -29,6 +32,27 @@ public class OrderController {
             response.setCode(500);
             response.setResponse("failed");
             response.setMessage("구매 처리하는 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+        return response;
+    }
+
+    /**
+     * 구매리스트 조회는 유저가 주문한(order)의 주문 상품들(orderItem)을 보여주는 것이다.
+     * 따라서 이중 포문으로 구성되었다.
+     */
+    @GetMapping("/{userName}/buyingList")
+    public Response buyingList(@PathVariable("userName")String email){
+        Response response = new Response();
+        try {
+            User findUser = userService.findByEmail(email);
+            List<OrderItem> buyingList = orderService.findAllByUser(findUser);
+            response.setResponse("success");
+            response.setMessage(email+"님의 구매리스트입니다.");
+            response.setData(buyingList);
+        } catch (Exception e) {
+            response.setResponse("failed");
+            response.setMessage("구매리스트를 조회하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
         return response;

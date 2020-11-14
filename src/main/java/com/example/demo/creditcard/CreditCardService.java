@@ -28,18 +28,14 @@ public class CreditCardService {
     }
 
     @Transactional
-    public Long update(Long cardId, CreditCardInfo creditCardInfo) {
-        CreditCardInfo findCreditCard = creditCardRepository.findById(cardId).orElseThrow();
+    public void update(Long id, CreditCardInfo creditCardInfo) {
+        CreditCardInfo findCreditCard = creditCardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        findCreditCard.update(creditCardInfo);
-
-        return findCreditCard.getId();
+        findCreditCard.updateCreditCard(creditCardInfo);
     }
 
     @Transactional
-    public Long delete(Long cardId) {
+    public void delete(Long cardId) {
         creditCardRepository.deleteById(cardId);
-
-        return cardId;
     }
 }

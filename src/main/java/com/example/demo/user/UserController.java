@@ -2,8 +2,11 @@ package com.example.demo.user;
 
 import com.example.demo.config.JwtTokenUtil;
 import com.example.demo.domain.Response;
-import com.example.demo.shop.Product;
-import com.example.demo.shop.ProductService;
+import com.example.demo.product.Product;
+import com.example.demo.product.ProductService;
+import com.example.demo.point.Point;
+import com.example.demo.point.PointChargeDto;
+import com.example.demo.point.PointService;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,8 @@ import java.util.List;
 public class UserController {
 
     private final JwtUserDetailsService userService;
+
+    private final PointService pointService;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -33,21 +38,6 @@ public class UserController {
         } catch (Exception e) {
             response.setResponse("failed");
             response.setMessage("판매 리스트를 조회하는 도중 오류가 발생했습니다.");
-            response.setData(e.toString());
-        }
-        return response;
-    }
-    @GetMapping("/{userName}/buyingList")
-    public Response buyingList(@PathVariable("userName")String email){
-        Response response = new Response();
-        try {
-            List<Product> buyingList = userService.findBuyingList(email);
-            response.setResponse("success");
-            response.setMessage(email+"님의 구매리스트입니다.");
-            response.setData(buyingList);
-        } catch (Exception e) {
-            response.setResponse("failed");
-            response.setMessage("구매리스트를 조회하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
         return response;
@@ -86,12 +76,12 @@ public class UserController {
     public @ResponseBody Response chargePoint(@PathVariable("point")int point, Principal principal){
         Response response = new Response();
         try {
-            userService.addPoint(principal.getName(),point);
+            User byEmail = userService.findByEmail(principal.getName());
+            pointService.chargePoint(new PointChargeDto(point),byEmail.getId());
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("포인트 충전을 성공적으로 완료했습니다.");
-            User findUser = userService.findByEmail(principal.getName());
-            UserPointResponse dto = new UserPointResponse(findUser.getEmail(), findUser.getPoint());
+            UserPointResponse dto = new UserPointResponse(byEmail.getEmail(), byEmail.getPoint());
             response.setData(dto);
         } catch (Exception e) {
             response.setResponse("failed");
@@ -107,6 +97,6 @@ public class UserController {
     @Getter @Setter
     static class UserPointResponse{
         String name;
-        int point;
+        Point point;
     }
 }
