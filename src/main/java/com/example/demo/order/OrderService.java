@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -42,5 +45,15 @@ public class OrderService {
     @Transactional
     public Order findById(Long orderedId) {
         return orderRepository.findById(orderedId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Transactional
+    public List<OrderItem> findAllByUser(User user){
+        List<Order> orders = orderRepository.findAllByUser(user);
+        List<OrderItem> answer = new ArrayList<>();
+        for(Order order: orders){
+            answer.addAll(order.getOrderItems());
+        }
+        return answer;
     }
 }
