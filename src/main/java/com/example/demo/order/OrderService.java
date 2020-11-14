@@ -48,11 +48,11 @@ public class OrderService {
     }
 
     @Transactional
-    public List<OrderItem> findAllByUser(User user){
+    public List<OrderProduct> findAllByUser(User user){
         List<Order> orders = orderRepository.findAllByUser(user);
-        List<OrderItem> answer = new ArrayList<>();
+        List<OrderProduct> answer = new ArrayList<>();
         for(Order order: orders){
-            answer.addAll(order.getOrderItems());
+            answer.addAll(order.getOrderProducts());
         }
         return answer;
     }

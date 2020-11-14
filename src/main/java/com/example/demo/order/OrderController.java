@@ -1,8 +1,7 @@
 package com.example.demo.order;
 
 import com.example.demo.domain.Response;
-import com.example.demo.orderItem.OrderItem;
-import com.example.demo.shop.Product;
+import com.example.demo.orderProduct.OrderProduct;
 import com.example.demo.user.JwtUserDetailsService;
 import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +45,7 @@ public class OrderController {
         Response response = new Response();
         try {
             User findUser = userService.findByEmail(email);
-            List<OrderItem> buyingList = orderService.findAllByUser(findUser);
+            List<OrderProduct> buyingList = orderService.findAllByUser(findUser);
             response.setResponse("success");
             response.setMessage(email+"님의 구매리스트입니다.");
             response.setData(buyingList);
