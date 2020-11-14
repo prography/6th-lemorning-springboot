@@ -2,18 +2,14 @@ package com.example.demo.customOrderProduct;
 
 import com.example.demo.customOrder.CustomOrder;
 import com.example.demo.customProduct.CustomProduct;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomOrderProduct {
 
     @Id

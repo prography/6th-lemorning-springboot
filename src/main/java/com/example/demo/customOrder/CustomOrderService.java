@@ -28,4 +28,9 @@ public class CustomOrderService {
     public List<CustomOrder> findAll() {
         return customOrderRepository.findAll();
     }
+
+    @Transactional
+    public void delete(Long id) {
+        customOrderRepository.deleteById(id);
+    }
 }

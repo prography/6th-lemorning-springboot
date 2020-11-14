@@ -3,10 +3,7 @@ package com.example.demo.customOrder;
 import com.example.demo.creditcard.CreditCardInfo;
 import com.example.demo.customOrderProduct.CustomOrderProduct;
 import com.example.demo.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,8 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomOrder {
 
     @Id

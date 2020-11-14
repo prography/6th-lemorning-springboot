@@ -14,8 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreditCardInfo {
 
     @Id
@@ -38,6 +37,8 @@ public class CreditCardInfo {
 
     private String simplePassword;
 
+//    private String billingKey;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -59,7 +60,7 @@ public class CreditCardInfo {
         this.simplePassword = simplePassword;
     }
 
-    public void update(CreditCardInfo creditCardInfo) {
+    public void updateCreditCard(CreditCardInfo creditCardInfo) {
         this.cardNickname = creditCardInfo.cardNickname;
         this.cardNum = creditCardInfo.cardNum;
         this.expireYear = creditCardInfo.expireYear;

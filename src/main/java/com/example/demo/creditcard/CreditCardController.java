@@ -75,11 +75,10 @@ public class CreditCardController {
         Response response = new Response();
 
         try {
-            Long deleteId = creditCardService.delete(cardId);
+            creditCardService.delete(cardId);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 삭제에 성공하였습니다.");
-            response.setData(deleteId);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
