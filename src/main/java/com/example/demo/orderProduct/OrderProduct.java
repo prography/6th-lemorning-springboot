@@ -1,7 +1,7 @@
-package com.example.demo.orderItem;
+package com.example.demo.orderProduct;
 
 import com.example.demo.order.Order;
-import com.example.demo.shop.Product;
+import com.example.demo.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,17 +9,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order_item")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // 생성자를 다른 계층에서 함부로 생성하지 못하도록 막아준다.
-public class OrderItem {
+public class OrderProduct {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id")
     private Long id;
 
@@ -36,12 +35,11 @@ public class OrderItem {
 
     // 생성 메서드
     // 먼저 product 랑 orderItem 이랑 묶어준다.
-    public static OrderItem createOrderItem(Product product){
-        OrderItem orderItem = new OrderItem();
-        orderItem.setProduct(product);
-        orderItem.setOrderPrice(product.getPrice());
+    public static OrderProduct createOrderProduct(Product product){
+        OrderProduct orderProduct = new OrderProduct();
+        orderProduct.setProduct(product);
+        orderProduct.setOrderPrice(product.getPrice());
 
-        return orderItem;
+        return orderProduct;
     }
-
 }

@@ -1,8 +1,8 @@
 package com.example.demo.order;
 
-import com.example.demo.orderItem.OrderItem;
-import com.example.demo.shop.Product;
-import com.example.demo.shop.ProductService;
+import com.example.demo.orderProduct.OrderProduct;
+import com.example.demo.product.Product;
+import com.example.demo.product.ProductService;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,10 @@ public class OrderService {
         Product product = itemService.findById(itemId);
 
         // 주문 상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(product);
+        OrderProduct orderProduct = OrderProduct.createOrderProduct(product);
 
-        // 주문 생성
-        Order order = Order.createOrder(member, orderItem);
+        // 주문 생성 + 포인트 차감.
+        Order order = Order.createOrder(member, orderProduct);
 
         // 주문 저장
         orderRepository.save(order);    // cascade.all 때문에 퍼진다.

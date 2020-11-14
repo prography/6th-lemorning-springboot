@@ -1,11 +1,8 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
-import com.example.demo.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ProductServiceTest {
@@ -19,6 +16,7 @@ class ProductServiceTest {
                 .imageUrl("http://www.naver.com")
                 .alarmUrl("http://www.naver.com")
                 .build();
-        productService.save(productDto);
+        Product product = ProductDto.toEntity(productDto);
+        productService.save(product);
     }
 }

@@ -1,17 +1,12 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
 import com.example.demo.domain.Response;
 import com.example.demo.order.OrderService;
 import com.example.demo.user.JwtUserDetailsService;
-import com.example.demo.user.User;
-import com.example.demo.user.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

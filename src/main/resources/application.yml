@@ -1,17 +1,17 @@
 spring:
-  h2:
-    console:
-      enabled: true
-  datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
+#  h2:
+#    console:
+#      enabled: true
+#  datasource:
+#    hikari:
+#    jdbc-url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
   jwt:
     secret: lemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorninglemorning
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/lemorning
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/lemorning
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   devtools:
     livereload:
       enabled: true   # 이 옵션은 정적 파일 변동 시 자동 반영될 수 있도록 돕는다.

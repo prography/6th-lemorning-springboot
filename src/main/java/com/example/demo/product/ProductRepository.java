@@ -1,6 +1,5 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
-import com.example.demo.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

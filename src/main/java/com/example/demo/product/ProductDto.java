@@ -1,6 +1,5 @@
-package com.example.demo.shop;
+package com.example.demo.product;
 
-import com.example.demo.user.User;
 import lombok.*;
 
 @Getter
@@ -31,4 +30,13 @@ public class ProductDto {
     answerDto.setSeller_id(findProduct.getUser().getId());
     return  answerDto;
   }
+
+    public static Product toEntity(ProductDto dto) {
+      return Product.builder().name(dto.getName())
+              .alarmUrl(dto.getAlarmUrl())
+              .categoryName(dto.getCategoryName())
+              .imageUrl(dto.getImageUrl())
+              .price(dto.getPrice())
+              .build();
+    }
 }

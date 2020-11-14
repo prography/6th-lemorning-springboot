@@ -1,8 +1,10 @@
 package com.example.demo.user;
 
+import com.example.demo.creditcard.CreditCardInfo;
+import com.example.demo.customOrder.CustomOrder;
 import com.example.demo.order.Order;
-import com.example.demo.shop.Product;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.demo.product.Product;
+import com.example.demo.point.Point;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,16 +12,18 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
 
-    @Id @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -32,10 +36,7 @@ public class User implements UserDetails {
     @Column(name = "auth")
     private String auth;
 
-    private int point;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     private String profileImageUrl;
 
@@ -43,6 +44,17 @@ public class User implements UserDetails {
     private Gender gender;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CreditCardInfo> creditCardInfos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CustomOrder> customOrders = new ArrayList<>();
+
+    private int pointSum;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Point point;
 
     // 연관관계의 종속자
     @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
@@ -54,25 +66,33 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Product> sellingProducts = new ArrayList<>();
 
-    @Builder
-    public User(String email, String password, String auth) {
+    public User(String email){
         this.email = email;
-        this.password = password;
-        this.auth = auth;
+        this.point = new Point(0);
     }
 
     @Builder
-    public User(String email, String password, String auth, int point, LocalDateTime birthday,
-                String profileImageUrl, Gender gender, String nickname) {
+    public User(String email, String password, String auth, int point, LocalDate birthday, Gender gender, String nickname) {
         this.email = email;
         this.password = password;
         this.auth = auth;
-        this.point = point;
+        this.point = new Point(point);
         this.birthday = birthday;
-        this.profileImageUrl = profileImageUrl;
         this.gender = gender;
         this.nickname = nickname;
     }
+
+    // 연관관계 메소드
+    public void addCreditCardInfo(CreditCardInfo creditCardInfo) {
+        this.creditCardInfos.add(creditCardInfo);
+        creditCardInfo.setUser(this);
+    }
+
+    public User(String email, Point point) {
+            this.email = email;
+            this.point = point;
+            this.pointSum += point.getPointAmount();
+        }
 
     // 사용자의 권한을 콜렉션 형태로 반환
     // 단, 클래스 자료형은 GrantedAuthority를 구현해야함
