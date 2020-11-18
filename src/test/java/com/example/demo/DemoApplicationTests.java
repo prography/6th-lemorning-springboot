@@ -25,7 +25,7 @@ class DemoApplicationTests {
 		MockMultipartFile firstFile = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
 		String url = s3Service.upload("", firstFile);
 		System.out.println(url);
-		assertTrue(url.contains("https://bomnae-static.s3.ap-northeast-2.amazonaws.com/"));
+		assertTrue(url.contains("https://lemorning-static.s3.ap-northeast-2.amazonaws.com/"));
 	}
 
 }
