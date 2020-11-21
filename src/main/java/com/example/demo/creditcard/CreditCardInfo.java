@@ -1,10 +1,9 @@
 package com.example.demo.creditcard;
 
-import com.example.demo.customOrder.CustomOrder;
-import com.example.demo.order.Order;
+import com.example.demo.request.UpdateCardRequestDto;
+import com.example.demo.point.Point;
 import com.example.demo.user.User;
 import lombok.*;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"creditCardBank", "cardNickName", "expireYear", "expireMonth", "birth", "simplePassword"})
 public class CreditCardInfo {
 
     @Id
@@ -25,7 +25,7 @@ public class CreditCardInfo {
     @Enumerated(EnumType.STRING)
     private CreditCardBank creditCardBank;
 
-    private String cardNickname;
+    private String cardNickName;
 
     private String cardNum;
 
@@ -37,34 +37,39 @@ public class CreditCardInfo {
 
     private String simplePassword;
 
-//    private String billingKey;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "creditCardInfo", cascade = CascadeType.ALL)
-    private List<CustomOrder> customOrders = new ArrayList<>();
-
-    @OneToMany(mappedBy = "creditCardInfo", cascade = CascadeType.ALL)
-    private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.ALL)
+    private List<Point> pointHistory = new ArrayList<>();
 
     @Builder
-    public CreditCardInfo(CreditCardBank creditCardBank, String cardNickname, String cardNum, int expireYear, int expireMonth, LocalDate birth, String simplePassword) {
+    public CreditCardInfo(User user,
+                          CreditCardBank creditCardBank,
+                          String cardNickname,
+                          String cardNum,
+                          int expireYear,
+                          int expireMonth,
+                          String simplePassword) {
         this.creditCardBank = creditCardBank;
-        this.cardNickname = cardNickname;
+        this.cardNickName = cardNickname;
         this.cardNum = cardNum;
         this.expireYear = expireYear;
         this.expireMonth = expireMonth;
-        this.birth = birth;
         this.simplePassword = simplePassword;
+        addUser(user);
     }
 
-    public void updateCreditCard(CreditCardInfo creditCardInfo) {
-        this.cardNickname = creditCardInfo.cardNickname;
-        this.cardNum = creditCardInfo.cardNum;
-        this.expireYear = creditCardInfo.expireYear;
-        this.expireMonth = creditCardInfo.expireMonth;
-        this.simplePassword = creditCardInfo.simplePassword;
+    // CreditCardInfo - User 연관관계 메소드
+    public void addUser(User user) {
+        this.user = user;
+        this.birth = user.getBirthday();
+        user.getCreditCardList().add(this);
+    }
+
+    public void updateCreditCard(UpdateCardRequestDto card) {
+        this.cardNickName = card.getCardNickName();
+        this.simplePassword = card.getSimplePassword();
     }
 }

@@ -1,17 +1,10 @@
 package com.example.demo.point;
 
-import com.example.demo.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import javax.transaction.Transactional;
-import java.util.List;
+import org.springframework.data.repository.query.Param;
 
 public interface PointRepository extends JpaRepository<Point, Long> {
-
-    List<Point> findAllByUser(User user);
-
-    @Transactional
-    @Query("select sum(p.pointAmount) from Point p where p.user = ?1")
-    Integer amountSum(User user);
+    @Query("select sum(p.point) from Point p where p.id = :credit_card_id")
+    int getTotalPointByCreditCard(@Param("credit_card_id") Long cardId);
 }
