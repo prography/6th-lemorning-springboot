@@ -4,6 +4,7 @@ import com.example.demo.creditcard.CreditCardInfo;
 import com.example.demo.exception.NotEnoughPointException;
 import com.example.demo.order.Order;
 import com.example.demo.point.Point;
+import com.example.demo.upload.Upload;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -49,6 +50,10 @@ public class User implements UserDetails {
     // User - Order
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
+
+    // User - Upload
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Upload> uploads = new ArrayList<>();
 
     // User - CreditCardInfo
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

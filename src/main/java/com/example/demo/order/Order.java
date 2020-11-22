@@ -1,6 +1,5 @@
 package com.example.demo.order;
 
-import com.example.demo.creditcard.CreditCardInfo;
 import com.example.demo.orderProduct.OrderProduct;
 import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,14 +35,16 @@ public class Order {
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status; // 주문 상태 [ORDER, CANCEL]
+    private OrderStatus orderStatus; // 주문 상태 [ORDER, CANCEL]
 
+    // Order - User
     public void setUser(User user) {
         this.user = user;
         user.getOrders().add(this);
     }
 
-    public void addOrderItem(OrderProduct orderProduct) {
+    // Order - OrderProduct
+    public void addOrderProduct(OrderProduct orderProduct) {
         this.orderProducts.add(orderProduct);
         orderProduct.setOrder(this);
     }
@@ -53,22 +54,21 @@ public class Order {
     public static Order createOrder(User user, List<OrderProduct> orderProducts) {
         Order order = new Order();
         order.setUser(user);
+        order.setOrderStatus(OrderStatus.ORDER);
+        order.setOrderDateTime(LocalDateTime.now());
 
         int totalprice = 0;
         for (OrderProduct orderProduct : orderProducts) {
-            order.addOrderItem(orderProduct);
+            order.addOrderProduct(orderProduct);
             totalprice += orderProduct.getPrice();
         }
 
         user.removePoint(totalprice);
 
-        order.setStatus(OrderStatus.ORDER);
-        order.setOrderDateTime(LocalDateTime.now());
-
         return order;
     }
 
     public void cancelOrder() {
-        this.setStatus(OrderStatus.CANCEL);
+        this.setOrderStatus(OrderStatus.CANCEL);
     }
 }

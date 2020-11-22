@@ -6,20 +6,17 @@ import com.example.demo.domain.Response;
 import com.example.demo.request.ChargePointRequestDto;
 import com.example.demo.response.IdResponseDto;
 import com.example.demo.response.SearchPointResponseDto;
-import com.example.demo.user.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/point")
 public class PointController {
 
-    private final JwtUserDetailsService userService;
     private final PointService pointService;
     private final CreditCardService cardService;
 

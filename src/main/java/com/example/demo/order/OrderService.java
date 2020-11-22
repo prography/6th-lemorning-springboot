@@ -35,9 +35,7 @@ public class OrderService {
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (Long productId : productIds) {
             Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
-            OrderProduct orderProduct = OrderProduct.createOrderProduct(product);
-
-            orderProducts.add(orderProduct);
+            orderProducts.add(OrderProduct.createOrderProduct(product));
         }
 
         // 주문 생성 + 포인트 차감.
