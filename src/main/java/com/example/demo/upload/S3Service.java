@@ -49,7 +49,8 @@ public class S3Service {
     //업로드
     public String upload(String currentFilePath, MultipartFile file) throws IOException {
         SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
-        String fileName = file.getOriginalFilename() + "-" + date.format(new Date());
+        LocalDate date1 = LocalDate.now();
+        String fileName = date1.getYear()+"/"+date1.getMonthValue()+"/"+date1.getDayOfMonth()+"/"+file.getOriginalFilename() + "-" + date.format(new Date());
 
         if (!"".equals(currentFilePath) && currentFilePath != null) {
             boolean isExistObject = s3.doesObjectExist(bucket, currentFilePath);
@@ -57,11 +58,9 @@ public class S3Service {
                 s3.deleteObject(bucket, currentFilePath);
             }
         }
-        LocalDate date1 = LocalDate.now();
-        String folderString = date1.getYear()+"/"+date1.getMonthValue()+"/"+date1.getDayOfMonth()+"/";
-        s3.putObject(new PutObjectRequest(bucket, folderString+fileName, file.getInputStream(), null)
+        s3.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3.getUrl(bucket, folderString+fileName).toString();
+        return s3.getUrl(bucket, fileName).toString();
     }
 
     public void deleteFile(String filePath) throws AmazonServiceException {

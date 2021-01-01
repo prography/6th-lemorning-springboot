@@ -3,6 +3,7 @@ package com.example.demo.user;
 import com.example.demo.product.Product;
 import com.example.demo.product.ProductRepository;
 import com.example.demo.point.PointRepository;
+import com.example.demo.upload.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -31,6 +33,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 	private final ProductRepository productRepository;
 
 	private final PointRepository pointRepository;
+	private final S3Service s3Service;
 
 	/**
 	 * Spring Security 필수 메소드 구현
@@ -66,11 +69,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 	 * @param dto
 	 */
 	@Transactional
-	public Long updateUserInfo(UserDto dto){
+	public Long updateUserInfo(UserDto dto) throws IOException {
 		User findUser = findByEmail(dto.getEmail());
 		findUser.setBirthday(dto.getBirthday());
 		findUser.setGender(dto.getGender());
 		findUser.setNickname(dto.getNickname());
+		s3Service.upload("", dto.getProfile());
 		findUser.setProfileImageUrl(dto.getProfileImageUrl());
 		return findUser.getId();
 	}

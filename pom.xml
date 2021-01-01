@@ -68,12 +68,10 @@
 			<artifactId>spring-cloud-starter-aws</artifactId>
 			<version>2.1.1.RELEASE</version>
 		</dependency>
-    <dependency>
-        <groupId>org.jetbrains</groupId>
-        <artifactId>annotations</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <scope>compile</scope>
-    </dependency>
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+		</dependency>
   </dependencies>
 
 	<build>
