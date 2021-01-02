@@ -11,7 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_product")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // 생성자를 다른 계층에서 함부로 생성하지 못하도록 막아준다.
@@ -19,7 +19,7 @@ public class OrderProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_item_id")
+    @Column(name = "order_product_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,14 +31,14 @@ public class OrderProduct {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    private int orderPrice;     // 주문 가격
+    private int price;     // 주문 가격
 
     // 생성 메서드
     // 먼저 product 랑 orderItem 이랑 묶어준다.
-    public static OrderProduct createOrderProduct(Product product){
+    public static OrderProduct createOrderProduct(Product product) {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProduct(product);
-        orderProduct.setOrderPrice(product.getPrice());
+        orderProduct.setPrice(product.getPrice());
 
         return orderProduct;
     }

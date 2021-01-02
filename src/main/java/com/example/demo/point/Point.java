@@ -1,32 +1,42 @@
 package com.example.demo.point;
 
-import com.example.demo.user.User;
+import com.example.demo.creditcard.CreditCardInfo;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@ToString(of = {"point", "chargeDateTime"})
 public class Point {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "point_id")
     private Long id;
 
-    private int pointAmount;
+    private int point;
 
-    private LocalDateTime pointDateTime;
+    private LocalDateTime chargeDateTime;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credit_card_id")
+    private CreditCardInfo creditCard;
 
+    public static Point createPoint(CreditCardInfo card, int point) {
+        Point p = new Point();
+        p.point = point;
+        p.chargeDateTime = LocalDateTime.now();
+        p.setCreditCard(card);
 
-    public Point(int point) {
-        this.pointAmount = point;
+        return p;
+    }
+
+    public void setCreditCard(CreditCardInfo card) {
+        card.getPointHistory().add(this);
+        this.creditCard = card;
     }
 }

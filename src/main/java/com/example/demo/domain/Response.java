@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,17 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Response {
+@AllArgsConstructor
+public class Response<T> {
     private int code;
     private String response;
     private String message;
-    private Object data;
-
-    public Response(int code, String response, String message, Object data) {
-        this.code = code;
-        this.response = response;
-        this.message = message;
-        this.data = data;
-    }
-
+    private T data;
+    private String error;
 }

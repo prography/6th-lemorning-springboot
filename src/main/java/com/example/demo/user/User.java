@@ -1,12 +1,11 @@
 package com.example.demo.user;
 
 import com.example.demo.creditcard.CreditCardInfo;
-import com.example.demo.customOrder.CustomOrder;
+import com.example.demo.exception.NotEnoughPointException;
 import com.example.demo.order.Order;
-import com.example.demo.product.Product;
 import com.example.demo.point.Point;
+import com.example.demo.upload.Upload;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +19,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(of = {"email", "password", "birthday"})
 public class User implements UserDetails {
 
     @Id
@@ -43,55 +43,45 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private String nickname;
+    private String nickName;
 
+    private int point;
+
+    // User - Order
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<CreditCardInfo> creditCardInfos = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<CustomOrder> customOrders = new ArrayList<>();
-
-    private int pointSum;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Point point;
-
-    // 연관관계의 종속자
-    @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Product> buyingProducts = new ArrayList<>();
+    // User - Upload
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Upload> uploads = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Product> sellingProducts = new ArrayList<>();
-
-    public User(String email) {
-        this.email = email;
-        this.point = new Point(0);
-    }
+    // User - CreditCardInfo
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CreditCardInfo> creditCardList = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String auth, int point, LocalDate birthday, Gender gender, String nickname) {
+    public User(String email, String password, String auth, LocalDate birthday, Gender gender, String nickName) {
         this.email = email;
         this.password = password;
         this.auth = auth;
-        this.point = new Point(point);
         this.birthday = birthday;
         this.gender = gender;
-        this.nickname = nickname;
+        this.nickName = nickName;
+        this.point = 0;
     }
 
-    // 연관관계 메소드
-    public void addCreditCardInfo(CreditCardInfo creditCardInfo) {
-        this.creditCardInfos.add(creditCardInfo);
-        creditCardInfo.setUser(this);
+    public void addPoint(int point) {
+        this.point += point;
     }
 
-    public User(String email, Point point) {
-        this.email = email;
-        this.point = point;
-        this.pointSum += point.getPointAmount();
+
+    public void removePoint(int point) {
+        int result = this.point - point;
+
+        if (result < 0)
+            throw new NotEnoughPointException("포인트가 부족합니다!");
+
+        this.point = result;
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환

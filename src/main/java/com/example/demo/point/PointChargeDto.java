@@ -6,7 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +21,11 @@ public class PointChargeDto {
     }
 
     public static Point toEntity(PointChargeDto dto) {
-        return Point.builder()
-                .pointAmount(dto.pointAmount)
-                .pointDateTime(LocalDateTime.now())
-                .user(dto.user)
-                .build();
+        return null;
+//        return Point.builder()
+////                .pointAmount(dto.pointAmount)
+//                .pointDateTime(LocalDateTime.now())
+//                .user(dto.user)
+//                .build();
     }
 }
