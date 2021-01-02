@@ -20,6 +20,7 @@ import java.util.*;
 
 @Entity
 @Getter
+@Builder
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,8 +59,8 @@ public class User implements UserDetails {
 
     private int pointSum;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Point point;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Point> pointList = new ArrayList<>();
 
     // 연관관계의 종속자
     @OneToMany(mappedBy = "user") // 반대쪽 변수 명을 적는다.
@@ -71,33 +72,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Product> sellingProducts = new ArrayList<>();
 
-    public User(String email){
-        this.email = email;
-        this.point = new Point(0);
-    }
-
-    @Builder
-    public User(String email, String password, String auth, int point, LocalDate birthday, Gender gender, String nickname) {
-        this.email = email;
-        this.password = password;
-        this.auth = auth;
-        this.point = new Point(point);
-        this.birthday = birthday;
-        this.gender = gender;
-        this.nickname = nickname;
-    }
 
     // 연관관계 메소드
     public void addCreditCardInfo(CreditCardInfo creditCardInfo) {
         this.creditCardInfos.add(creditCardInfo);
         creditCardInfo.setUser(this);
     }
-
-    public User(String email, Point point) {
-            this.email = email;
-            this.point = point;
-            this.pointSum += point.getPointAmount();
-        }
 
     // 사용자의 권한을 콜렉션 형태로 반환
     // 단, 클래스 자료형은 GrantedAuthority를 구현해야함
@@ -148,5 +128,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         // 계정이 사용 가능한지 확인하는 로직
         return true; // true -> 사용 가능
+    }
+
+    public void updatePointSum(int pointAmount) {
+        this.pointSum += pointAmount;
     }
 }

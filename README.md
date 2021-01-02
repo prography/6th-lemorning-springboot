@@ -88,3 +88,27 @@
     }
 }
 ```
+
+10. [GET] http://localhost:8080/product/buy/{id}
+- TODO : POST로 바꾸기
+- 상품 구매 로직입니다.
+- 구매 로직을 완료하기 위해서는 먼저 계정의 포인트를 충전시켜줘야합니다.
+- (7)을 참조하도록 합니다.
+- response
+```
+{
+    "code": 0,
+    "response": "success",
+    "message": "구매 처리 완료",
+    "data": {
+        "id": 3,
+        "name": "product1",
+        "categoryName": "humor",
+        "imageUrl": "https://ventulus95.gitbook.io/lemorning/shop_api/upload-api",
+        "alarmUrl": "https://ventulus95.gitbook.io/lemorning/shop_api/upload-api",
+        "price": 100
+    }
+}
+```
+
+11. 

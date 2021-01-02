@@ -82,6 +82,14 @@ public class Product {
         user.getSellingProducts().add(this);
     }
 
+    /**
+     * 구매 목록에 담아주고, 포인트를 바꾸어준다.
+     * @Auther 유동관
+     * @FirstDate 21/01/03
+     * @param user
+     * @param product
+     * @return  구매 완료된 물품을 리턴해준다.
+     */
     public static Product buy(User user, Product product){
         Product new_product = new Product();
         new_product.update(product);

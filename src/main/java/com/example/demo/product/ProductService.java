@@ -95,32 +95,28 @@ public class ProductService {
 	    Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
 
 	    // 2. 잔고 확인
-        buyAvailable(email,product.getPrice());
+        if(buyAvailable(email,product.getPrice())){
+            // 3. 구매
+            Product new_product = Product.buy(user,product);
 
-        // 3. 구매
-	    Product new_product = Product.buy(user,product);
-
-	    // 4. 저장 ( 저장 해야 유저도 반영이 되었음 )
-	    productRepository.save(new_product);
-	    return new_product;
+            // 4. 저장 ( 저장 해야 유저도 반영이 되었음 )
+            productRepository.save(new_product);
+            return new_product;
+        }else{
+            return null;
+        }
     }
 
     /**
-     * 잔고 확인
+     * 유저가 가지고 있는 포인트가 가격보다 많다면, true
+     * @Auther 유동관
+     * @FirstDate 21/01/03
      * @param email
      * @param price
      */
     @Transactional
-    public void buyAvailable(String email, int price) {
-        User findUser = findByEmail(email);
-        if(findUser.getPointSum()-price<0){
-            throw new IllegalStateException("돈이 부족합니다.");
-        }
+    public boolean buyAvailable(String email, int price) {
+        User findUser = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        return findUser.getPointSum() - price >= 0;
     }
-    public User findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
-        return user;
-    }
-
-
 }

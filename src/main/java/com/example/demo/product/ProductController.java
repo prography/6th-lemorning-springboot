@@ -22,6 +22,9 @@ public class ProductController {
         Response response = new Response();
         try {
             Product buyProduct = productService.buy(principal.getName(), productId);
+            if(buyProduct==null){
+                throw new Exception("잔액부족입니다.");
+            }
             response.setResponse("success");
             response.setMessage("구매 처리 완료");
             response.setData(buyProduct);
