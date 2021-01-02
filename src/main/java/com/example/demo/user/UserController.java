@@ -60,12 +60,14 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public Response signup(@RequestBody UserDto infoDto) { // 회원 추가
+    public Response signup(UserDto infoDto) { // 회원 추가
         Response response = new Response();
         try {
             userService.save(infoDto);
+            userService.updateUserInfo(infoDto);
             response.setResponse("success");
             response.setMessage("회원가입을 성공적으로 완료했습니다.");
+            response.setCode(200);
         } catch (Exception e) {
             response.setResponse("failed");
             response.setMessage("회원가입을 하는 도중 오류가 발생했습니다.");
