@@ -1,27 +1,42 @@
 package com.example.demo.creditcard;
 
+import com.example.demo.creditcard.request.CreditCardInfoDto;
+import com.example.demo.creditcard.response.SavedCardRes;
 import com.example.demo.domain.Response;
+import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/card")
 public class CreditCardController {
     private final CreditCardService creditCardService;
+    private final JwtUserDetailsService userService;
 
+    /**
+     * @Auther 유동관
+     * @Date 21/01/03
+     * @param dto
+     * @param principal 계정정보
+     * @return SavedCardRes 타입의 객체. 정보를 한정해서 보여주자
+     */
     @PostMapping("/save")
-    public Response save(@RequestBody CreditCardInfo creditCardInfo) {
+    public Response save(@RequestBody CreditCardInfoDto dto, Principal principal) {
         Response response = new Response();
 
         try {
-            creditCardService.save(creditCardInfo);
+            CreditCardInfo savedCard = creditCardService.save(dto,principal);
+            SavedCardRes resDto = SavedCardRes.toDto(savedCard);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 등록에 성공하였습니다.");
-            response.setData(creditCardInfo);
+            response.setData(resDto);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
@@ -73,11 +88,11 @@ public class CreditCardController {
     }
 
     @PostMapping("/delete/{id}")
-    public Response delete(@PathVariable("id") Long cardId) {
+    public Response delete(@PathVariable("id") Long cardId, Principal principal) {
         Response response = new Response();
 
         try {
-            creditCardService.delete(cardId);
+            creditCardService.delete(cardId,principal);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 삭제에 성공하였습니다.");
@@ -110,4 +125,7 @@ public class CreditCardController {
 
         return response;
     }
+
 }
+
+

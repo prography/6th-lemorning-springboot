@@ -18,7 +18,7 @@ public class OrderController {
     private final OrderService orderService;
     private final JwtUserDetailsService userService;
 
-    @PostMapping(value = "/order/{id}")
+    @GetMapping(value = "/order/{id}")
     public Response create(Principal principal, @PathVariable("id") Long itemId){
         Response response = new Response();
         try {

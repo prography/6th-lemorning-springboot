@@ -3,6 +3,8 @@ package com.example.demo.creditcard;
 import com.example.demo.customOrder.CustomOrder;
 import com.example.demo.order.Order;
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.apache.tomcat.jni.Local;
 
@@ -12,9 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter @Builder
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@ToString(exclude = {"user"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "id")
 public class CreditCardInfo {
 
     @Id
@@ -43,22 +48,18 @@ public class CreditCardInfo {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void updateUser(User user){
+        this.user = user;
+        if (!user.getCreditCardInfos().contains(this)) {
+            user.getCreditCardInfos().add(this);
+        }
+    }
+
     @OneToMany(mappedBy = "creditCardInfo", cascade = CascadeType.ALL)
     private List<CustomOrder> customOrders = new ArrayList<>();
 
     @OneToMany(mappedBy = "creditCardInfo", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
-
-    @Builder
-    public CreditCardInfo(CreditCardBank creditCardBank, String cardNickname, String cardNum, int expireYear, int expireMonth, LocalDate birth, String simplePassword) {
-        this.creditCardBank = creditCardBank;
-        this.cardNickname = cardNickname;
-        this.cardNum = cardNum;
-        this.expireYear = expireYear;
-        this.expireMonth = expireMonth;
-        this.birth = birth;
-        this.simplePassword = simplePassword;
-    }
 
     public void updateCreditCard(CreditCardInfo creditCardInfo) {
         this.cardNickname = creditCardInfo.cardNickname;

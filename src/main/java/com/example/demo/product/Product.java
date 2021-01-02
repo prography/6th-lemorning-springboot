@@ -82,11 +82,20 @@ public class Product {
         user.getSellingProducts().add(this);
     }
 
+    /**
+     * 구매 목록에 담아준다.
+     * @Auther 유동관
+     * @FirstDate 21/01/03
+     * @Modified order와의 연계로 인한 포인트 차감 로직 제거
+     * @param user
+     * @param product
+     * @return  구매 완료된 물품을 리턴해준다.
+     */
     public static Product buy(User user, Product product){
         Product new_product = new Product();
         new_product.update(product);
         new_product.addBuyingProductList(user);
-        user.setPointSum(user.getPointSum()-new_product.getPrice());
+        // user.setPointSum(user.getPointSum()-new_product.getPrice());
         return new_product;
     }
     public static Product addProduct(User user, ProductDto dto) {

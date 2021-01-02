@@ -1,6 +1,7 @@
 package com.example.demo.point;
 
 import com.example.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,12 +22,19 @@ public class Point {
 
     private LocalDateTime pointDateTime;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
+    // 연관관계의 주인
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
 
     public Point(int point) {
         this.pointAmount = point;
+    }
+
+    public void updateUser(User user) {
+        this.user = user;
+        user.getPointList().add(this);
     }
 }

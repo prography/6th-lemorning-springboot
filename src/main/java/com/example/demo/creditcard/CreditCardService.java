@@ -1,11 +1,16 @@
 package com.example.demo.creditcard;
 
+import com.example.demo.creditcard.request.CreditCardInfoDto;
+import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,10 +18,15 @@ import java.util.List;
 public class CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
+    private final JwtUserDetailsService userService;
 
     @Transactional
-    public void save(CreditCardInfo creditCardInfo) {
-        creditCardRepository.save(creditCardInfo);
+    public CreditCardInfo save(CreditCardInfoDto dto, Principal principal) {
+        CreditCardInfo creditCardInfo = CreditCardInfoDto.toEntity(dto);    // 엔티티로 변환하는 작업 해줌 - 21/01/03 유동관
+        User byEmail = userService.findByEmail(principal.getName());
+        creditCardInfo.updateUser(byEmail);
+
+        return creditCardRepository.save(creditCardInfo);
     }
 
     public List<CreditCardInfo> findAll() {
@@ -35,7 +45,10 @@ public class CreditCardService {
     }
 
     @Transactional
-    public void delete(Long cardId) {
+    public void delete(long cardId,Principal principal) {
+        User byEmail = userService.findByEmail(principal.getName());
+        CreditCardInfo card = creditCardRepository.findById(cardId);
+        byEmail.deleteCard(card);
         creditCardRepository.deleteById(cardId);
     }
 }

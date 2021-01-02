@@ -7,6 +7,7 @@ import com.example.demo.product.ProductService;
 import com.example.demo.point.Point;
 import com.example.demo.point.PointChargeDto;
 import com.example.demo.point.PointService;
+import com.example.demo.user.response.ProfileResDto;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,22 @@ public class UserController {
 
     private final ProductService productService;
 
-
+    @GetMapping("/profile")
+    public Response profile(Principal principal){
+        Response response = new Response();
+        try {
+            User byEmail = userService.findByEmail(principal.getName());
+            response.setResponse("success");
+            response.setMessage(byEmail.getEmail()+"님의 프로필입니다.");
+            ProfileResDto res = ProfileResDto.toDto(byEmail);
+            response.setData(res);
+        } catch (Exception e) {
+            response.setResponse("failed");
+            response.setMessage("프로필 조회하는 도중 오류가 발생했습니다.");
+            response.setData(e.toString());
+        }
+        return response;
+    }
 
     @GetMapping("/{userName}/sellingList")
     public Response sellingList(@PathVariable("userName")String email){
@@ -78,12 +94,11 @@ public class UserController {
     public @ResponseBody Response chargePoint(@PathVariable("point")int point, Principal principal){
         Response response = new Response();
         try {
-            User byEmail = userService.findByEmail(principal.getName());
-            pointService.chargePoint(new PointChargeDto(point),byEmail.getId());
+            Point savedPoint = pointService.chargePoint(new PointChargeDto(point), principal);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("포인트 충전을 성공적으로 완료했습니다.");
-            UserPointResponse dto = new UserPointResponse(byEmail.getEmail(), byEmail.getPoint());
+            UserPointResponse dto = UserPointResponse.toDto(savedPoint);
             response.setData(dto);
         } catch (Exception e) {
             response.setResponse("failed");
@@ -94,11 +109,19 @@ public class UserController {
     }
 
     // 포인트 충전을 위한 클래스
+    @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @Getter @Setter
     static class UserPointResponse{
-        String name;
-        Point point;
+        String email;
+        int money;
+
+        public static UserPointResponse toDto(Point savedPoint) {
+            return UserPointResponse.builder()
+                    .email(savedPoint.getUser().getEmail())
+                    .money(savedPoint.getPointAmount())
+                    .build();
+        }
     }
 }
