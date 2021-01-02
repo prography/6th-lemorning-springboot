@@ -5,6 +5,9 @@ import com.example.demo.customOrder.CustomOrder;
 import com.example.demo.order.Order;
 import com.example.demo.product.Product;
 import com.example.demo.point.Point;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +23,8 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"creditCardInfos"})
+@JsonIdentityInfo(generator = IntSequenceGenerator.class,property = "id")
 public class User implements UserDetails {
 
     @Id
