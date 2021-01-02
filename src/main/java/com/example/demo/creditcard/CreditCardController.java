@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,11 +88,11 @@ public class CreditCardController {
     }
 
     @PostMapping("/delete/{id}")
-    public Response delete(@PathVariable("id") Long cardId) {
+    public Response delete(@PathVariable("id") Long cardId, Principal principal) {
         Response response = new Response();
 
         try {
-            creditCardService.delete(cardId);
+            creditCardService.delete(cardId,principal);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 삭제에 성공하였습니다.");

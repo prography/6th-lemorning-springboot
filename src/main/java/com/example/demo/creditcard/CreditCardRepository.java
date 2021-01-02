@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CreditCardRepository extends JpaRepository<CreditCardInfo, Long> {
     List<CreditCardInfo> findByUser(User user);
+
+    CreditCardInfo findById(long id);
 }

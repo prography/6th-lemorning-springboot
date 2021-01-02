@@ -133,4 +133,11 @@ public class User implements UserDetails {
     public void updatePointSum(int pointAmount) {
         this.pointSum += pointAmount;
     }
+
+    public void deleteCard(CreditCardInfo card) {
+        if(this.creditCardInfos.contains(card)){
+            this.creditCardInfos.remove(card);
+        }
+        card.setUser(null);
+    }
 }

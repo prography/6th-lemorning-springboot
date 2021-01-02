@@ -111,4 +111,17 @@
 }
 ```
 
-11. 
+11. [GET] http://localhost:8080/profile
+- 프로필
+- 커스터마이징 가능 현재는 이메일만 반환하도록 구현
+- response
+```
+{
+    "code": 0,
+    "response": "success",
+    "message": "test@naver.com님의 프로필입니다.",
+    "data": {
+        "email": "test@naver.com"
+    }
+}
+```

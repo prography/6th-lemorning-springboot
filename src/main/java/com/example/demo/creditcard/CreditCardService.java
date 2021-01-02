@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +45,10 @@ public class CreditCardService {
     }
 
     @Transactional
-    public void delete(Long cardId) {
+    public void delete(long cardId,Principal principal) {
+        User byEmail = userService.findByEmail(principal.getName());
+        CreditCardInfo card = creditCardRepository.findById(cardId);
+        byEmail.deleteCard(card);
         creditCardRepository.deleteById(cardId);
     }
 }

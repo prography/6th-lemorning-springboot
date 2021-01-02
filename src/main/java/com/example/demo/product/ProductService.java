@@ -1,5 +1,6 @@
 package com.example.demo.product;
 
+import com.example.demo.order.OrderService;
 import com.example.demo.user.User;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import java.util.List;
 public class ProductService {
 
 	private final ProductRepository productRepository;
-
 	private final UserRepository userRepository;
 
 	@Transactional
