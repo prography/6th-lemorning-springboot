@@ -24,9 +24,7 @@ public class CreditCardInfoDto {
     private int expireMonth;
     private LocalDate birth;
     private String simplePassword;
-    private User user;
-    private List<CustomOrder> customOrders = new ArrayList<>();
-    private List<Order> orders = new ArrayList<>();
+    private String email;
 
     /**
      * 신용카드 등록을 위한 dto to entity
@@ -44,12 +42,21 @@ public class CreditCardInfoDto {
                 .expireMonth(dto.getExpireMonth())
                 .birth(dto.getBirth())
                 .simplePassword(dto.getSimplePassword())
-                .user(dto.getUser())
-                .customOrders(dto.getCustomOrders())
-                .orders(dto.getOrders())
                 .build();
     }
 
+    public static CreditCardInfoDto toDto(CreditCardInfo entity) {
+        return CreditCardInfoDto.builder()
+                .cardNickname(entity.getCardNickname())
+                .creditCardBank(entity.getCreditCardBank())
+                .cardNum(entity.getCardNum())
+                .expireYear(entity.getExpireYear())
+                .expireMonth(entity.getExpireMonth())
+                .birth(entity.getBirth())
+                .simplePassword(entity.getSimplePassword())
+                .email(entity.getUser().getEmail())
+                .build();
+    }
 
 
     public void updateCreditCard(CreditCardInfoDto creditCardInfo) {

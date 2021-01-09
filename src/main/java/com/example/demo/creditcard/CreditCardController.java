@@ -51,10 +51,11 @@ public class CreditCardController {
 
         try {
             CreditCardInfo findCard = creditCardService.findOne(cardId);
+            SavedCardRes resDto = SavedCardRes.toDto(findCard);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 조회에 성공하였습니다.");
-            response.setData(findCard);
+            response.setData(resDto);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
@@ -66,15 +67,17 @@ public class CreditCardController {
     }
 
     @PostMapping("/update/{id}")
-    public Response update(@PathVariable("id") Long cardId, @RequestBody CreditCardInfo creditCardInfo) {
+    public Response update(@PathVariable("id") Long cardId, @RequestBody CreditCardInfoDto dto) {
         Response response = new Response();
 
         try {
-            creditCardService.update(cardId, creditCardInfo);
+            CreditCardInfo creditCardInfo = CreditCardInfoDto.toEntity(dto);
+            CreditCardInfo update = creditCardService.update(cardId, creditCardInfo);
+            CreditCardInfoDto creditCardInfoDto = CreditCardInfoDto.toDto(update);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 수정에 성공하였습니다.");
-            response.setData(creditCardInfo);
+            response.setData(creditCardInfoDto);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");

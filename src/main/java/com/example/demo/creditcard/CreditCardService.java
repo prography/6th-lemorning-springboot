@@ -37,10 +37,10 @@ public class CreditCardService {
     }
 
     @Transactional
-    public void update(Long id, CreditCardInfo creditCardInfo) {
+    public CreditCardInfo update(Long id, CreditCardInfo creditCardInfo) {
         CreditCardInfo findCreditCard = creditCardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-
         findCreditCard.updateCreditCard(creditCardInfo);
+        return findCreditCard;
     }
 
     @Transactional
