@@ -2,7 +2,7 @@ package com.example.demo.product;
 
 import com.example.demo.domain.Response;
 import com.example.demo.order.OrderService;
-import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.config.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,19 +1,14 @@
 package com.example.demo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Getter @Setter
-@NoArgsConstructor //need default constructor for JSON Parsing
-@AllArgsConstructor
+@Data
 public class JwtRequest implements Serializable {
 
 	private static final long serialVersionUID = 5926468583005150707L;
 	
-	private String username;
+	private String email;
 	private String password;
 }

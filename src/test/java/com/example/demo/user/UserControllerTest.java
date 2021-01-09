@@ -1,8 +1,7 @@
 package com.example.demo.user;
 
+import com.example.demo.config.JwtUserDetailsService;
 import com.example.demo.order.OrderService;
-import com.example.demo.point.Point;
-import com.example.demo.point.PointChargeDto;
 import com.example.demo.point.PointService;
 import com.example.demo.product.Product;
 import com.example.demo.product.ProductService;

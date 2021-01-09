@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import com.example.demo.config.JwtTokenUtil;
+import com.example.demo.config.JwtUserDetailsService;
 import com.example.demo.domain.Response;
 import com.example.demo.product.Product;
 import com.example.demo.product.ProductService;
@@ -64,27 +65,12 @@ public class UserController {
         Response response = new Response();
         try {
             userService.save(infoDto);
-            userService.updateUserInfo(infoDto);
             response.setResponse("success");
             response.setMessage("회원가입을 성공적으로 완료했습니다.");
             response.setCode(200);
         } catch (Exception e) {
             response.setResponse("failed");
             response.setMessage("회원가입을 하는 도중 오류가 발생했습니다.");
-            response.setData(e.toString());
-        }
-        return response;
-    }
-    @PostMapping("/signup2")
-    public Response signup2(@RequestBody UserDto dto){
-        Response response = new Response();
-        try {
-            userService.updateUserInfo(dto);
-            response.setResponse("success");
-            response.setMessage("회원가입2을 성공적으로 완료했습니다.");
-        }catch (Exception e) {
-            response.setResponse("failed");
-            response.setMessage("회원가입2을 하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
         }
         return response;
