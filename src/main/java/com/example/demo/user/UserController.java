@@ -32,11 +32,13 @@ public class UserController {
         Response response = new Response();
         try {
             User byEmail = userService.findByEmail(principal.getName());
+            response.setCode(200);
             response.setResponse("success");
             response.setMessage(byEmail.getEmail()+"님의 프로필입니다.");
             ProfileResDto res = ProfileResDto.toDto(byEmail);
             response.setData(res);
         } catch (Exception e) {
+            response.setCode(500);
             response.setResponse("failed");
             response.setMessage("프로필 조회하는 도중 오류가 발생했습니다.");
             response.setData(e.toString());
