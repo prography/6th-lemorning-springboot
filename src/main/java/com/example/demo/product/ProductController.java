@@ -57,9 +57,8 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public Response signup(ProductDto infoDto) { // 회원 추가
+    public Response products() { // 회원 추가
         Response response = new Response();
-
         try {
             response.setCode(200);
             response.setResponse("success");
@@ -81,7 +80,7 @@ public class ProductController {
             response.setCode(200);
             Product findProduct = productService.findById(id);
             response.setResponse("success");
-            response.setMessage("상품 " + findProduct + " 를 조회하는 것에 성공하였습니다.");
+            response.setMessage("상품 조회하는 것에 성공하였습니다.");
             response.setData(findProduct);
         } catch (Exception e) {
             response.setCode(400);

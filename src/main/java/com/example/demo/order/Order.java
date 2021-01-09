@@ -54,11 +54,14 @@ public class Order {
 
     // 생성 메서드
     // 포인트 차감
-    public static Order createOrder(User user, OrderProduct... orderProducts){
+    public static Order createOrder(User user, OrderProduct... orderProducts) throws Exception {
         Order order = new Order();
         order.setUser(user);
         for (OrderProduct orderProduct : orderProducts){
             order.addOrderItem(orderProduct);
+            if(user.getPointSum()<orderProduct.getOrderPrice()){
+                throw new Exception("잔액부족");
+            }
             user.setPointSum(user.getPointSum()- orderProduct.getOrderPrice());   // 포인트 차감
         }
         order.setStatus(OrderStatus.ORDER);

@@ -30,12 +30,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private static final List<String> EXCLUDE_URL =
             Collections.unmodifiableList(
                     Arrays.asList(
+                        "/products",
                         "/api/member",
                         "/authenticate",
                         "/h2-console/**",
                         "/authenticate",
                         "/signup",
-                        "/signup2",
                         "/login"
                     ));
 
