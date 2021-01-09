@@ -13,8 +13,12 @@ import lombok.NoArgsConstructor;
 public class ProfileResDto {
 
     private String email;
+    private String nickname;
 
     public static ProfileResDto toDto(User byEmail) {
-        return ProfileResDto.builder().email(byEmail.getEmail()).build();
+        return ProfileResDto.builder()
+                .email(byEmail.getEmail())
+                .nickname(byEmail.getNickname())
+                .build();
     }
 }
