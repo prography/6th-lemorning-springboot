@@ -1,0 +1,23 @@
+package com.lemorning.demo.user;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserDto {
+  private String email;
+  private String password;
+  private String auth = "ROLE_USER";
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate birthday;
+  private Gender gender;
+  private String nickname;
+  private MultipartFile profile;
+}

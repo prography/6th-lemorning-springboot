@@ -31,5 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-
+src/main/java/com/lemorning/demo/aop
+src/main/resources/application-local.properties
 src/main/resources/application-dev.yml
