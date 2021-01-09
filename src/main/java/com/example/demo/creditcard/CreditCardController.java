@@ -3,14 +3,12 @@ package com.example.demo.creditcard;
 import com.example.demo.creditcard.request.CreditCardInfoDto;
 import com.example.demo.creditcard.response.SavedCardRes;
 import com.example.demo.domain.Response;
-import com.example.demo.user.JwtUserDetailsService;
-import com.example.demo.user.User;
+import com.example.demo.config.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

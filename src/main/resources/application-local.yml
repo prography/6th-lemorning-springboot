@@ -1,0 +1,36 @@
+spring:
+  jwt:
+    secret: springJWTSecret
+  profiles: dev
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  h2:
+    console:
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create  # 이 옵션은 애플리케이션 실행 시점에 테이블을 drop 하고, 다시 생성한다
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        # show_sql: true
+        format_sql: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+logging:
+  level:
+    org.hibernate.SQL: debug
+    # org.hibernate.type: trace   # sql query 에 들어오는 파라메타 값 추적
+cloud:
+  aws:
+    credentials:
+      access-key: test
+      secret-key: test
+    s3:
+      bucket: lemorning-static
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

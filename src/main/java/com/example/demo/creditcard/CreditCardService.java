@@ -1,7 +1,7 @@
 package com.example.demo.creditcard;
 
 import com.example.demo.creditcard.request.CreditCardInfoDto;
-import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.config.JwtUserDetailsService;
 import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

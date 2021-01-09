@@ -2,10 +2,9 @@ package com.example.demo.order;
 
 import com.example.demo.domain.Response;
 import com.example.demo.orderProduct.OrderProduct;
-import com.example.demo.user.JwtUserDetailsService;
+import com.example.demo.config.JwtUserDetailsService;
 import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
