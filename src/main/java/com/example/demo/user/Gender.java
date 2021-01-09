@@ -1,13 +1,10 @@
 package com.example.demo.user;
 
-public enum Gender {
-    MALE("male"),FEMALE("female");
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    String value;
-    Gender(String val){
-        this.value = val;
-    }
-    public String getValue(){
-        return value;
-    }
+@Getter
+@AllArgsConstructor
+public enum Gender {
+    MALE,FEMALE
 }

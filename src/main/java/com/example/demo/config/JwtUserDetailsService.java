@@ -1,11 +1,8 @@
 package com.example.demo.config;
 
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberRepository;
-import com.example.demo.member.Role;
+import com.example.demo.user.Role;
 import com.example.demo.product.Product;
 import com.example.demo.user.User;
-import com.example.demo.user.UserDto;
 import com.example.demo.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,26 +35,23 @@ public class JwtUserDetailsService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email)
+        User member = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
-        if (email.equals("sup2is@gmail.com")) {
+        if (email.equals("dkyou7@naver.com")) {
             grantedAuthorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
         }
 
         return new org.springframework.security.core.userdetails.User(member.getEmail(), member.getPassword(), grantedAuthorities);
     }
 
-    public Member authenticateByEmailAndPassword(String email, String password) {
-        Member member = memberRepository.findByEmail(email)
+    public User authenticateByEmailAndPassword(String email, String password) {
+        User member = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
 
         if(!passwordEncoder.matches(password, member.getPassword())) {
@@ -89,15 +83,11 @@ public class JwtUserDetailsService implements UserDetailsService {
     /**
      * 회원정보 저장
      *
-     * @param infoDto 회원정보가 들어있는 DTO
+     * @param user 회원정보가 들어있는 DTO
      * @return 저장되는 회원의 PK
      */
-    public Long save(UserDto infoDto) {
-        infoDto.setPassword(passwordEncoder.encode(infoDto.getPassword()));
-
-        return userRepository.save(User.builder()
-                .email(infoDto.getEmail())
-                .auth(infoDto.getAuth())
-                .password(infoDto.getPassword()).build()).getId();
+    public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 }

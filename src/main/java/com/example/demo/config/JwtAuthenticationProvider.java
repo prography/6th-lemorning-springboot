@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberRepository;
+import com.example.demo.user.User;
+import com.example.demo.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository memberRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -26,7 +26,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        User member = memberRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
 
         if(passwordEncoder.matches(member.getPassword(), password)) {
             throw new BadCredentialsException("UnAuthorized");

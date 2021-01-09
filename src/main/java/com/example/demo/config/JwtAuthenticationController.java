@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.member.Member;
+import com.example.demo.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class JwtAuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        final Member member = userDetailService.authenticateByEmailAndPassword
+        final User member = userDetailService.authenticateByEmailAndPassword
                 (authenticationRequest.getEmail(), authenticationRequest.getPassword());
         final String token = jwtTokenUtil.generateToken(member.getEmail());
         return ResponseEntity.ok(new JwtResponse(token));
