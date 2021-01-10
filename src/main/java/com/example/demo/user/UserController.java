@@ -27,7 +27,7 @@ public class UserController {
 
     private final ProductService productService;
 
-    @GetMapping("/profile")
+    @PostMapping("/profile")
     public Response profile(Principal principal){
         Response response = new Response();
         try {

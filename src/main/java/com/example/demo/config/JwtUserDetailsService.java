@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import com.example.demo.creditcard.request.CreditCardInfoDto;
+import com.example.demo.creditcard.response.CardPublicDto;
 import com.example.demo.user.Role;
 import com.example.demo.product.Product;
 import com.example.demo.user.User;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,5 +93,14 @@ public class JwtUserDetailsService implements UserDetailsService {
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    public List<CardPublicDto> myCardList(Principal principal) {
+        User byEmail = userRepository.findByEmail(principal.getName()).orElseThrow(EntityNotFoundException::new);
+        List<CardPublicDto> res = new ArrayList<>();
+        byEmail.getCreditCardInfos().forEach(card ->{
+            res.add(CardPublicDto.toDto(card));
+        });
+        return res;
     }
 }

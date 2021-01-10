@@ -50,6 +50,12 @@ public class CreditCardInfoDto {
                 .build();
     }
 
+    public static CreditCardInfoDto toDto(CreditCardInfo card) {
+        return CreditCardInfoDto.builder()
+                .cardNickname(card.getCardNickname())
+                .cardNickname(card.getCardNum())
+                .build();
+    }
 
 
     public void updateCreditCard(CreditCardInfoDto creditCardInfo) {

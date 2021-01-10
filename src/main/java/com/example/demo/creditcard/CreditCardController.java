@@ -1,13 +1,16 @@
 package com.example.demo.creditcard;
 
 import com.example.demo.creditcard.request.CreditCardInfoDto;
+import com.example.demo.creditcard.response.CardPublicDto;
 import com.example.demo.creditcard.response.SavedCardRes;
 import com.example.demo.domain.Response;
 import com.example.demo.config.JwtUserDetailsService;
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,16 +48,21 @@ public class CreditCardController {
         return response;
     }
 
-    @GetMapping("/{id}")
-    public Response findOne(@PathVariable("id") Long cardId) {
+    @PostMapping("/{id}")
+    public Response findOne(Principal principal, @PathVariable("id") Long cardId) {
         Response response = new Response();
-
         try {
-            CreditCardInfo findCard = creditCardService.findOne(cardId);
-            response.setCode(200);
-            response.setResponse("success");
-            response.setMessage("카드 조회에 성공하였습니다.");
-            response.setData(findCard);
+            User byEmail = userService.findByEmail(principal.getName());
+            if(byEmail.getCreditCardInfos().stream().anyMatch(card -> card.getId().equals(cardId))){
+                CreditCardInfo findCard = creditCardService.findOne(cardId);
+                CardPublicDto res = CardPublicDto.toDto(findCard);
+                response.setCode(200);
+                response.setResponse("success");
+                response.setMessage("카드 조회에 성공하였습니다.");
+                response.setData(res);
+            }else{
+                throw new Exception("item not found");
+            }
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
@@ -104,16 +112,22 @@ public class CreditCardController {
         return response;
     }
 
+    /**
+     * 유저의 카드 리스트를 조회하는 것으로 리팩토링
+     * @Author 유동관
+     * @Date 21.01.10
+     * @param principal
+     * @return
+     */
     @GetMapping("/list")
-    public Response list(){
+    public Response list(Principal principal){
         Response response = new Response();
-
         try {
-            List<CreditCardInfo> cardInfoList = creditCardService.findAll();
+            List<CardPublicDto> res =  userService.myCardList(principal);
             response.setCode(200);
             response.setResponse("success");
             response.setMessage("카드 리스트 조회에 성공하였습니다.");
-            response.setData(cardInfoList);
+            response.setData(res);
         } catch (Exception e) {
             response.setCode(500);
             response.setResponse("failed");
